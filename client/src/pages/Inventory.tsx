@@ -36,7 +36,7 @@ export default function Inventory() {
   
   // State for filtering and pagination
   const [searchQuery, setSearchQuery] = useState("");
-  const [platform, setPlatform] = useState("");
+  const [platform, setPlatform] = useState("all");
   const [currentPage, setCurrentPage] = useState(1);
   const [sortColumn, setSortColumn] = useState("title");
   const [sortDirection, setSortDirection] = useState<'asc' | 'desc'>('asc');
@@ -49,7 +49,7 @@ export default function Inventory() {
   }, [searchQuery, platform]);
   
   // Fetch games with filters
-  const { data, isLoading } = useQuery({
+  const { data, isLoading } = useQuery<Game[]>({
     queryKey: ['/api/games', { search: searchQuery, platform }],
   });
   

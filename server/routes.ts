@@ -92,7 +92,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
       let games: Game[];
       if (search) {
         games = await storage.searchGames(search as string);
-      } else if (platform) {
+      } else if (platform && platform !== 'all') {
         games = await storage.getGamesByPlatform(platform as string);
       } else {
         games = await storage.getAllGames();

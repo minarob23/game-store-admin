@@ -81,25 +81,27 @@ export default function Sidebar() {
         
         <nav className="space-y-1">
           {navItems.map((item) => (
-            <Link key={item.href} href={item.href}>
-              <a
-                className={cn(
-                  "flex items-center px-3 py-3 rounded-md transition-colors",
-                  collapsed ? "justify-center" : "space-x-3",
-                  location === item.href 
-                    ? "bg-primary/20 text-primary" 
-                    : "text-muted-foreground hover:text-foreground hover:bg-muted"
-                )}
-              >
-                {item.icon}
-                <span className={cn(
-                  "transition-opacity duration-200",
-                  collapsed ? "opacity-0 w-0 overflow-hidden" : "opacity-100"
-                )}>
-                  {item.title}
-                </span>
-              </a>
-            </Link>
+            <div key={item.href}>
+              <Link href={item.href}>
+                <div
+                  className={cn(
+                    "flex items-center px-3 py-3 rounded-md transition-colors cursor-pointer",
+                    collapsed ? "justify-center" : "space-x-3",
+                    location === item.href 
+                      ? "bg-primary/20 text-primary" 
+                      : "text-muted-foreground hover:text-foreground hover:bg-muted"
+                  )}
+                >
+                  {item.icon}
+                  <span className={cn(
+                    "transition-opacity duration-200",
+                    collapsed ? "opacity-0 w-0 overflow-hidden" : "opacity-100"
+                  )}>
+                    {item.title}
+                  </span>
+                </div>
+              </Link>
+            </div>
           ))}
         </nav>
       </div>

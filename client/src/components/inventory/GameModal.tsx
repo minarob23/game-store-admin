@@ -55,7 +55,7 @@ export default function GameModal({ open, onOpenChange, onSave, game, title }: G
         xsx: false,
         switch: false
       },
-      genre: "",
+      genre: "none",
       developer: "",
       publisher: "",
       price: 0,
@@ -87,7 +87,7 @@ export default function GameModal({ open, onOpenChange, onSave, game, title }: G
           xsx: false,
           switch: false
         },
-        genre: "",
+        genre: "none",
         developer: "",
         publisher: "",
         price: 0,

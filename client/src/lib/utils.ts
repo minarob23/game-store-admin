@@ -54,7 +54,7 @@ export function getStockStatus(stock: number): { label: string; className: strin
 
 // Platform options for select dropdowns
 export const platformOptions = [
-  { value: '', label: 'All Platforms' },
+  { value: 'all', label: 'All Platforms' },
   { value: 'pc', label: 'PC' },
   { value: 'ps5', label: 'PlayStation 5' },
   { value: 'xsx', label: 'Xbox Series X' },
@@ -63,7 +63,7 @@ export const platformOptions = [
 
 // Genre options for select dropdowns
 export const genreOptions = [
-  { value: '', label: 'Select Genre' },
+  { value: 'none', label: 'Select Genre' },
   { value: 'action', label: 'Action' },
   { value: 'adventure', label: 'Adventure' },
   { value: 'action-adventure', label: 'Action Adventure' },
