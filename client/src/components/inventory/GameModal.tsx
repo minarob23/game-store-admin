@@ -1,0 +1,398 @@
+import { useEffect } from "react";
+import { useForm } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { 
+  Dialog, 
+  DialogContent, 
+  DialogDescription, 
+  DialogFooter, 
+  DialogHeader, 
+  DialogTitle 
+} from "@/components/ui/dialog";
+import {
+  Form,
+  FormControl,
+  FormDescription,
+  FormField,
+  FormItem,
+  FormLabel,
+  FormMessage,
+} from "@/components/ui/form";
+import { Input } from "@/components/ui/input";
+import { Button } from "@/components/ui/button";
+import { Textarea } from "@/components/ui/textarea";
+import { Checkbox } from "@/components/ui/checkbox";
+import { 
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
+import { Game, gameFormSchema, platformSchema } from "@shared/schema";
+import { genreOptions } from "@/lib/utils";
+import { ImagePlus } from "lucide-react";
+
+interface GameModalProps {
+  open: boolean;
+  onOpenChange: (open: boolean) => void;
+  onSave: (data: any) => void;
+  game?: Game;
+  title: string;
+}
+
+export default function GameModal({ open, onOpenChange, onSave, game, title }: GameModalProps) {
+  // Create form with validation
+  const form = useForm({
+    resolver: zodResolver(gameFormSchema),
+    defaultValues: {
+      title: "",
+      description: "",
+      releaseDate: "",
+      platforms: {
+        pc: false,
+        ps5: false,
+        xsx: false,
+        switch: false
+      },
+      genre: "",
+      developer: "",
+      publisher: "",
+      price: 0,
+      stock: 0,
+      imageUrl: ""
+    }
+  });
+
+  // Update form when editing a game
+  useEffect(() => {
+    if (game) {
+      const releaseDateStr = typeof game.releaseDate === 'string' 
+        ? game.releaseDate 
+        : new Date(game.releaseDate).toISOString().split('T')[0];
+        
+      form.reset({
+        ...game,
+        releaseDate: releaseDateStr,
+        platforms: game.platforms as any
+      });
+    } else {
+      form.reset({
+        title: "",
+        description: "",
+        releaseDate: "",
+        platforms: {
+          pc: false,
+          ps5: false,
+          xsx: false,
+          switch: false
+        },
+        genre: "",
+        developer: "",
+        publisher: "",
+        price: 0,
+        stock: 0,
+        imageUrl: ""
+      });
+    }
+  }, [game, form, open]);
+
+  const onSubmit = (data: any) => {
+    // Convert releaseDate string to Date if needed
+    if (typeof data.releaseDate === 'string') {
+      data.releaseDate = new Date(data.releaseDate);
+    }
+    
+    // Convert price to number
+    data.price = parseFloat(data.price);
+    
+    // Convert stock to integer
+    data.stock = parseInt(data.stock);
+    
+    onSave(data);
+  };
+
+  return (
+    <Dialog open={open} onOpenChange={onOpenChange}>
+      <DialogContent className="max-w-3xl max-h-[90vh] overflow-y-auto">
+        <DialogHeader>
+          <DialogTitle className="text-xl font-poppins">{title}</DialogTitle>
+          <DialogDescription>
+            Fill in the details for this game. Fields marked with * are required.
+          </DialogDescription>
+        </DialogHeader>
+        
+        <Form {...form}>
+          <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+              {/* Image Upload */}
+              <div className="md:col-span-2">
+                <div className="flex items-center justify-center h-40 bg-muted rounded-lg border-2 border-dashed border-border">
+                  <div className="text-center">
+                    <ImagePlus className="w-8 h-8 mx-auto text-muted-foreground mb-2" />
+                    <p className="text-sm text-muted-foreground">Upload Game Cover Image</p>
+                    <p className="text-xs text-muted-foreground/70 mt-1">PNG, JPG or GIF (Max. 2MB)</p>
+                  </div>
+                </div>
+              </div>
+              
+              {/* Game Title */}
+              <FormField
+                control={form.control}
+                name="title"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>Game Title *</FormLabel>
+                    <FormControl>
+                      <Input placeholder="Enter game title" {...field} />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+              
+              {/* Release Date */}
+              <FormField
+                control={form.control}
+                name="releaseDate"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>Release Date *</FormLabel>
+                    <FormControl>
+                      <Input type="date" {...field} />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+              
+              {/* Developer */}
+              <FormField
+                control={form.control}
+                name="developer"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>Developer *</FormLabel>
+                    <FormControl>
+                      <Input placeholder="Enter developer name" {...field} />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+              
+              {/* Publisher */}
+              <FormField
+                control={form.control}
+                name="publisher"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>Publisher *</FormLabel>
+                    <FormControl>
+                      <Input placeholder="Enter publisher name" {...field} />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+              
+              {/* Price */}
+              <FormField
+                control={form.control}
+                name="price"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>Price (USD) *</FormLabel>
+                    <FormControl>
+                      <Input 
+                        type="number" 
+                        min="0" 
+                        step="0.01" 
+                        placeholder="0.00" 
+                        {...field} 
+                        onChange={(e) => field.onChange(parseFloat(e.target.value) || 0)}
+                      />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+              
+              {/* Stock */}
+              <FormField
+                control={form.control}
+                name="stock"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>Stock Quantity *</FormLabel>
+                    <FormControl>
+                      <Input 
+                        type="number" 
+                        min="0" 
+                        placeholder="0" 
+                        {...field} 
+                        onChange={(e) => field.onChange(parseInt(e.target.value) || 0)}
+                      />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+              
+              {/* Genre */}
+              <FormField
+                control={form.control}
+                name="genre"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>Main Genre *</FormLabel>
+                    <Select
+                      value={field.value}
+                      onValueChange={field.onChange}
+                    >
+                      <FormControl>
+                        <SelectTrigger>
+                          <SelectValue placeholder="Select a genre" />
+                        </SelectTrigger>
+                      </FormControl>
+                      <SelectContent>
+                        {genreOptions.map((option) => (
+                          <SelectItem 
+                            key={option.value} 
+                            value={option.value}
+                          >
+                            {option.label}
+                          </SelectItem>
+                        ))}
+                      </SelectContent>
+                    </Select>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+              
+              {/* Platforms */}
+              <FormItem>
+                <FormLabel>Platforms *</FormLabel>
+                <div className="space-y-2">
+                  <FormField
+                    control={form.control}
+                    name="platforms.pc"
+                    render={({ field }) => (
+                      <div className="flex items-center space-x-2">
+                        <FormControl>
+                          <Checkbox
+                            checked={field.value}
+                            onCheckedChange={field.onChange}
+                          />
+                        </FormControl>
+                        <label
+                          htmlFor="pc"
+                          className="text-sm font-medium leading-none cursor-pointer"
+                        >
+                          PC
+                        </label>
+                      </div>
+                    )}
+                  />
+                  
+                  <FormField
+                    control={form.control}
+                    name="platforms.ps5"
+                    render={({ field }) => (
+                      <div className="flex items-center space-x-2">
+                        <FormControl>
+                          <Checkbox
+                            checked={field.value}
+                            onCheckedChange={field.onChange}
+                          />
+                        </FormControl>
+                        <label
+                          htmlFor="ps5"
+                          className="text-sm font-medium leading-none cursor-pointer"
+                        >
+                          PlayStation 5
+                        </label>
+                      </div>
+                    )}
+                  />
+                  
+                  <FormField
+                    control={form.control}
+                    name="platforms.xsx"
+                    render={({ field }) => (
+                      <div className="flex items-center space-x-2">
+                        <FormControl>
+                          <Checkbox
+                            checked={field.value}
+                            onCheckedChange={field.onChange}
+                          />
+                        </FormControl>
+                        <label
+                          htmlFor="xsx"
+                          className="text-sm font-medium leading-none cursor-pointer"
+                        >
+                          Xbox Series X
+                        </label>
+                      </div>
+                    )}
+                  />
+                  
+                  <FormField
+                    control={form.control}
+                    name="platforms.switch"
+                    render={({ field }) => (
+                      <div className="flex items-center space-x-2">
+                        <FormControl>
+                          <Checkbox
+                            checked={field.value}
+                            onCheckedChange={field.onChange}
+                          />
+                        </FormControl>
+                        <label
+                          htmlFor="switch"
+                          className="text-sm font-medium leading-none cursor-pointer"
+                        >
+                          Nintendo Switch
+                        </label>
+                      </div>
+                    )}
+                  />
+                </div>
+                <FormMessage />
+              </FormItem>
+              
+              {/* Description */}
+              <FormField
+                control={form.control}
+                name="description"
+                render={({ field }) => (
+                  <FormItem className="md:col-span-2">
+                    <FormLabel>Description *</FormLabel>
+                    <FormControl>
+                      <Textarea
+                        placeholder="Enter a detailed description of the game"
+                        rows={5}
+                        {...field}
+                      />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+            </div>
+            
+            <DialogFooter>
+              <Button type="button" variant="outline" onClick={() => onOpenChange(false)}>
+                Cancel
+              </Button>
+              <Button type="submit" className="bg-primary hover:bg-secondary">
+                Save Game
+              </Button>
+            </DialogFooter>
+          </form>
+        </Form>
+      </DialogContent>
+    </Dialog>
+  );
+}
