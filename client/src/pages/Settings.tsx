@@ -47,7 +47,8 @@ const passwordFormSchema = z.object({
 export default function Settings() {
   const { user } = useAuth();
   const { toast } = useToast();
-  const { theme } = useTheme();
+  const { theme, setTheme } = useTheme();
+  const [fontSize, setFontSize] = useState<'small' | 'medium' | 'large'>('medium');
   
   // Profile form
   const profileForm = useForm({
@@ -194,9 +195,51 @@ export default function Settings() {
                   Adjust the font size for better readability
                 </p>
                 <div className="flex items-center mt-4 space-x-4">
-                  <Button variant="outline" size="sm">Small</Button>
-                  <Button variant="default" size="sm" className="bg-primary">Medium</Button>
-                  <Button variant="outline" size="sm">Large</Button>
+                  <Button 
+                    variant={fontSize === 'small' ? "default" : "outline"} 
+                    size="sm"
+                    className={fontSize === 'small' ? "bg-primary" : ""}
+                    onClick={() => {
+                      setFontSize('small');
+                      document.documentElement.style.fontSize = '14px';
+                      toast({
+                        title: "Font size updated",
+                        description: "Small font size applied"
+                      });
+                    }}
+                  >
+                    Small
+                  </Button>
+                  <Button 
+                    variant={fontSize === 'medium' ? "default" : "outline"} 
+                    size="sm"
+                    className={fontSize === 'medium' ? "bg-primary" : ""}
+                    onClick={() => {
+                      setFontSize('medium');
+                      document.documentElement.style.fontSize = '16px';
+                      toast({
+                        title: "Font size updated",
+                        description: "Medium font size applied"
+                      });
+                    }}
+                  >
+                    Medium
+                  </Button>
+                  <Button 
+                    variant={fontSize === 'large' ? "default" : "outline"} 
+                    size="sm"
+                    className={fontSize === 'large' ? "bg-primary" : ""}
+                    onClick={() => {
+                      setFontSize('large');
+                      document.documentElement.style.fontSize = '18px';
+                      toast({
+                        title: "Font size updated",
+                        description: "Large font size applied"
+                      });
+                    }}
+                  >
+                    Large
+                  </Button>
                 </div>
               </div>
             </CardContent>

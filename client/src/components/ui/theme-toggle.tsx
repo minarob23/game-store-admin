@@ -7,9 +7,19 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { useTheme } from "@/components/ui/theme-provider";
+import { useToast } from "@/hooks/use-toast";
 
 export function ThemeToggle() {
   const { setTheme, theme } = useTheme();
+  const { toast } = useToast();
+
+  const toggleTheme = (selectedTheme: "light" | "dark") => {
+    setTheme(selectedTheme);
+    toast({
+      title: "Theme updated",
+      description: `${selectedTheme.charAt(0).toUpperCase() + selectedTheme.slice(1)} theme applied`
+    });
+  };
 
   return (
     <DropdownMenu>
@@ -25,11 +35,11 @@ export function ThemeToggle() {
         </Button>
       </DropdownMenuTrigger>
       <DropdownMenuContent align="end">
-        <DropdownMenuItem onClick={() => setTheme("light")}>
+        <DropdownMenuItem onClick={() => toggleTheme("light")}>
           <Sun className="mr-2 h-4 w-4" />
           Light
         </DropdownMenuItem>
-        <DropdownMenuItem onClick={() => setTheme("dark")}>
+        <DropdownMenuItem onClick={() => toggleTheme("dark")}>
           <Moon className="mr-2 h-4 w-4" />
           Dark
         </DropdownMenuItem>

@@ -16,7 +16,22 @@ export default function Dashboard() {
   const [gameModalOpen, setGameModalOpen] = useState(false);
 
   // Fetch dashboard data
-  const { data, isLoading } = useQuery({
+  const { data, isLoading } = useQuery<{
+    stats: {
+      totalGames: number;
+      newReleases: number;
+      lowStock: number;
+      outOfStock: number;
+      revenue: string;
+    },
+    platforms: {
+      pc: number;
+      ps5: number;
+      xsx: number;
+      switch: number;
+    },
+    recentGames: Game[]
+  }>({
     queryKey: ['/api/dashboard/stats'],
   });
 
