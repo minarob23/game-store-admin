@@ -80,27 +80,27 @@ export default function Dashboard() {
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
         <StatsCard 
           title="Total Games" 
-          value={isLoading ? "..." : data?.stats.totalGames} 
+          value={isLoading ? "..." : data?.stats?.totalGames || 0} 
           icon="games" 
           isLoading={isLoading} 
         />
         <StatsCard 
           title="New Releases" 
-          value={isLoading ? "..." : data?.stats.newReleases} 
+          value={isLoading ? "..." : data?.stats?.newReleases || 0} 
           icon="releases" 
           change={isLoading ? "" : `in the last 30 days`}
           isLoading={isLoading} 
         />
         <StatsCard 
           title="Low Stock" 
-          value={isLoading ? "..." : data?.stats.lowStock} 
+          value={isLoading ? "..." : data?.stats?.lowStock || 0} 
           icon="stock" 
           change={isLoading ? "" : "Requires attention"}
           isLoading={isLoading} 
         />
         <StatsCard 
           title="Revenue" 
-          value={isLoading ? "..." : parseFloat(data?.stats.revenue)} 
+          value={isLoading ? "..." : data?.stats?.revenue ? parseFloat(data.stats.revenue) : 0} 
           icon="revenue" 
           isLoading={isLoading} 
         />
@@ -125,7 +125,7 @@ export default function Dashboard() {
           />
           
           <PlatformDistribution 
-            platforms={isLoading ? { pc: 0, ps5: 0, xsx: 0, switch: 0 } : data?.platforms} 
+            platforms={isLoading ? { pc: 0, ps5: 0, xsx: 0, switch: 0 } : data?.platforms || { pc: 0, ps5: 0, xsx: 0, switch: 0 }} 
             isLoading={isLoading} 
           />
         </div>

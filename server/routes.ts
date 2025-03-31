@@ -211,22 +211,28 @@ export async function registerRoutes(app: Express): Promise<Server> {
       };
       
       games.forEach(game => {
-        const gamePlatforms = game.platforms as Record<string, boolean>;
-        for (const [platform, isAvailable] of Object.entries(gamePlatforms)) {
-          if (isAvailable && platform in platforms) {
-            platforms[platform as keyof typeof platforms]++;
+        try {
+          const gamePlatforms = game.platforms as Record<string, boolean>;
+          if (gamePlatforms) {
+            for (const [platform, isAvailable] of Object.entries(gamePlatforms)) {
+              if (isAvailable && platform in platforms) {
+                platforms[platform as keyof typeof platforms]++;
+              }
+            }
           }
+        } catch (err) {
+          console.error("Error processing game platforms:", err);
         }
       });
       
-      // Calculate percentages
-      const totalPlatformCount = Object.values(platforms).reduce((sum, count) => sum + count, 0);
-      const platformPercentages = Object.fromEntries(
-        Object.entries(platforms).map(([platform, count]) => [
-          platform, 
-          totalPlatformCount > 0 ? Math.round((count / totalPlatformCount) * 100) : 0
-        ])
-      );
+      // Calculate percentages - ensure we always have values even if zero
+      const totalPlatformCount = Object.values(platforms).reduce((sum, count) => sum + count, 0) || 1; // Avoid division by zero
+      const platformPercentages = {
+        pc: Math.round((platforms.pc / totalPlatformCount) * 100),
+        ps5: Math.round((platforms.ps5 / totalPlatformCount) * 100),
+        xsx: Math.round((platforms.xsx / totalPlatformCount) * 100),
+        switch: Math.round((platforms.switch / totalPlatformCount) * 100)
+      };
       
       // Get recent games (last 5 added)
       const recentGames = [...games]
