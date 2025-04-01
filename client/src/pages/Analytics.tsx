@@ -76,8 +76,16 @@ export default function Analytics() {
     { month: "Dec", revenue: 10500 }
   ];
   
-  // Colors for charts - Adjusting for better visibility in both light/dark themes
-  const COLORS = ["#7B1FA2", "#9C27B0", "#673AB7", "#3F51B5"];
+  // Colors for charts - Different color schemes for each chart type
+  const PLATFORM_COLORS = ["#7B1FA2", "#9C27B0", "#673AB7", "#3F51B5"]; // Purple theme for platforms
+  const INVENTORY_COLORS = {
+    light: "#2196F3", // Blue for light theme
+    dark: "#64B5F6"   // Lighter blue for dark theme
+  };
+  const REVENUE_COLORS = {
+    light: "#4CAF50", // Green for light theme
+    dark: "#81C784"   // Lighter green for dark theme
+  };
   
   // Get the current theme to adjust chart colors for theme changes
   const [isDarkTheme, setIsDarkTheme] = useState(document.documentElement.classList.contains('dark'));
@@ -138,7 +146,7 @@ export default function Analytics() {
                         label={({ name, percent }) => `${name} ${(percent * 100).toFixed(0)}%`}
                       >
                         {platformData.map((entry, index) => (
-                          <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} />
+                          <Cell key={`cell-${index}`} fill={PLATFORM_COLORS[index % PLATFORM_COLORS.length]} />
                         ))}
                       </Pie>
                       <Tooltip formatter={(value) => [`${value} games`, "Count"]} />
@@ -169,7 +177,7 @@ export default function Analytics() {
                       <XAxis dataKey="name" />
                       <YAxis />
                       <Tooltip />
-                      <Bar dataKey="value" fill={isDarkTheme ? "#B388FF" : "#7B1FA2"} />
+                      <Bar dataKey="value" fill={isDarkTheme ? INVENTORY_COLORS.dark : INVENTORY_COLORS.light} />
                     </BarChart>
                   </ResponsiveContainer>
                 )}
@@ -199,7 +207,7 @@ export default function Analytics() {
                     <Line 
                       type="monotone" 
                       dataKey="revenue" 
-                      stroke={isDarkTheme ? "#B388FF" : "#7B1FA2"} 
+                      stroke={isDarkTheme ? REVENUE_COLORS.dark : REVENUE_COLORS.light} 
                       strokeWidth={2} 
                       activeDot={{ r: 8 }} 
                     />
@@ -236,7 +244,7 @@ export default function Analytics() {
                       label={({ name, value, percent }) => `${name}: ${value} (${(percent * 100).toFixed(0)}%)`}
                     >
                       {platformData.map((entry, index) => (
-                        <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} />
+                        <Cell key={`cell-${index}`} fill={PLATFORM_COLORS[index % PLATFORM_COLORS.length]} />
                       ))}
                     </Pie>
                     <Tooltip formatter={(value) => [`${value} games`, "Count"]} />
@@ -270,7 +278,7 @@ export default function Analytics() {
                     <YAxis dataKey="name" type="category" width={120} />
                     <Tooltip />
                     <Legend />
-                    <Bar dataKey="value" fill={isDarkTheme ? "#CE93D8" : "#9C27B0"} name="Count" />
+                    <Bar dataKey="value" fill={isDarkTheme ? INVENTORY_COLORS.dark : INVENTORY_COLORS.light} name="Count" />
                   </BarChart>
                 </ResponsiveContainer>
               )}
@@ -301,7 +309,7 @@ export default function Analytics() {
                     <Line 
                       type="monotone" 
                       dataKey="revenue" 
-                      stroke={isDarkTheme ? "#B388FF" : "#7B1FA2"} 
+                      stroke={isDarkTheme ? REVENUE_COLORS.dark : REVENUE_COLORS.light} 
                       strokeWidth={3} 
                       activeDot={{ r: 8 }} 
                       name="Monthly Revenue"
@@ -354,7 +362,7 @@ export default function Analytics() {
                       <XAxis dataKey="name" />
                       <YAxis tickFormatter={(value) => `$${value}`} />
                       <Tooltip formatter={(value) => [`$${value}`, "Revenue"]} />
-                      <Bar dataKey="value" fill={isDarkTheme ? "#CE93D8" : "#9C27B0"} />
+                      <Bar dataKey="value" fill={isDarkTheme ? REVENUE_COLORS.dark : REVENUE_COLORS.light} />
                     </BarChart>
                   </ResponsiveContainer>
                 )}

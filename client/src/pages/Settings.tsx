@@ -31,7 +31,7 @@ import { useTheme } from "@/components/ui/theme-provider";
 // Profile form schema
 const profileFormSchema = z.object({
   username: z.string().min(2, "Username must be at least 2 characters"),
-  email: z.string().email("Invalid email address"),
+  email: z.string().min(6, "Password must be at least 6 characters"),
 });
 
 // Password form schema
@@ -55,7 +55,7 @@ export default function Settings() {
     resolver: zodResolver(profileFormSchema),
     defaultValues: {
       username: user?.username || "",
-      email: user?.email || "",
+      email: "", // Keep password field empty by default
     },
   });
   
@@ -136,12 +136,12 @@ export default function Settings() {
                     name="email"
                     render={({ field }) => (
                       <FormItem>
-                        <FormLabel>Email</FormLabel>
+                        <FormLabel>Password</FormLabel>
                         <FormControl>
-                          <Input {...field} />
+                          <Input type="password" {...field} />
                         </FormControl>
                         <FormDescription>
-                          Used for notifications and password recovery.
+                          Enter your password to confirm changes.
                         </FormDescription>
                         <FormMessage />
                       </FormItem>

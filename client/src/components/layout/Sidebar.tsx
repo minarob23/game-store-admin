@@ -14,6 +14,7 @@ import {
 import { Button } from "@/components/ui/button";
 import { Separator } from "@/components/ui/separator";
 import { useState } from "react";
+import Logo from "./Logo";
 
 type NavItem = {
   title: string;
@@ -45,13 +46,12 @@ export default function Sidebar() {
       )}
     >
       <div className="p-4 flex items-center justify-between border-b border-border">
-        <h1 className={cn(
-          "text-xl font-bold font-poppins transition-opacity duration-200",
+        <div className={cn(
+          "transition-opacity duration-200",
           collapsed ? "opacity-0 w-0 overflow-hidden" : "opacity-100"
         )}>
-          <span className="text-primary">GameStore</span>
-          <span className="text-secondary">Admin</span>
-        </h1>
+          <Logo />
+        </div>
         <Button 
           variant="ghost" 
           size="icon" 
