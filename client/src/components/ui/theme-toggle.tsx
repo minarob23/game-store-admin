@@ -15,6 +15,12 @@ export function ThemeToggle() {
 
   const toggleTheme = (selectedTheme: "light" | "dark") => {
     setTheme(selectedTheme);
+    
+    // Force the theme to apply by manipulating DOM directly in addition to React state
+    const root = window.document.documentElement;
+    root.classList.remove("light", "dark");
+    root.classList.add(selectedTheme);
+    
     toast({
       title: "Theme updated",
       description: `${selectedTheme.charAt(0).toUpperCase() + selectedTheme.slice(1)} theme applied`

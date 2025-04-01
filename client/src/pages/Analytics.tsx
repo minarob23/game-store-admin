@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
@@ -76,8 +76,25 @@ export default function Analytics() {
     { month: "Dec", revenue: 10500 }
   ];
   
-  // Colors for charts
+  // Colors for charts - Adjusting for better visibility in both light/dark themes
   const COLORS = ["#7B1FA2", "#9C27B0", "#673AB7", "#3F51B5"];
+  
+  // Get the current theme to adjust chart colors for theme changes
+  const [isDarkTheme, setIsDarkTheme] = useState(document.documentElement.classList.contains('dark'));
+  
+  // Update isDarkTheme when the theme changes
+  useEffect(() => {
+    const observer = new MutationObserver(() => {
+      setIsDarkTheme(document.documentElement.classList.contains('dark'));
+    });
+    
+    observer.observe(document.documentElement, {
+      attributes: true,
+      attributeFilter: ['class'],
+    });
+    
+    return () => observer.disconnect();
+  }, []);
   
   return (
     <div className="space-y-8">
@@ -152,7 +169,7 @@ export default function Analytics() {
                       <XAxis dataKey="name" />
                       <YAxis />
                       <Tooltip />
-                      <Bar dataKey="value" fill="#7B1FA2" />
+                      <Bar dataKey="value" fill={isDarkTheme ? "#B388FF" : "#7B1FA2"} />
                     </BarChart>
                   </ResponsiveContainer>
                 )}
@@ -182,7 +199,7 @@ export default function Analytics() {
                     <Line 
                       type="monotone" 
                       dataKey="revenue" 
-                      stroke="#7B1FA2" 
+                      stroke={isDarkTheme ? "#B388FF" : "#7B1FA2"} 
                       strokeWidth={2} 
                       activeDot={{ r: 8 }} 
                     />
@@ -253,7 +270,7 @@ export default function Analytics() {
                     <YAxis dataKey="name" type="category" width={120} />
                     <Tooltip />
                     <Legend />
-                    <Bar dataKey="value" fill="#9C27B0" name="Count" />
+                    <Bar dataKey="value" fill={isDarkTheme ? "#CE93D8" : "#9C27B0"} name="Count" />
                   </BarChart>
                 </ResponsiveContainer>
               )}
@@ -284,7 +301,7 @@ export default function Analytics() {
                     <Line 
                       type="monotone" 
                       dataKey="revenue" 
-                      stroke="#7B1FA2" 
+                      stroke={isDarkTheme ? "#B388FF" : "#7B1FA2"} 
                       strokeWidth={3} 
                       activeDot={{ r: 8 }} 
                       name="Monthly Revenue"
@@ -337,7 +354,7 @@ export default function Analytics() {
                       <XAxis dataKey="name" />
                       <YAxis tickFormatter={(value) => `$${value}`} />
                       <Tooltip formatter={(value) => [`$${value}`, "Revenue"]} />
-                      <Bar dataKey="value" fill="#9C27B0" />
+                      <Bar dataKey="value" fill={isDarkTheme ? "#CE93D8" : "#9C27B0"} />
                     </BarChart>
                   </ResponsiveContainer>
                 )}
