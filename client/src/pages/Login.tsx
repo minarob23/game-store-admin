@@ -56,7 +56,7 @@ export default function Login() {
         <CardHeader>
           <div className="flex justify-between items-center mb-2">
             <CardTitle className="text-3xl font-bold font-poppins">
-              <span className="text-primary">Game</span>
+              <span className="text-primary">GameStore</span>
               <span className="text-secondary">Admin</span>
             </CardTitle>
             <ThemeToggle />

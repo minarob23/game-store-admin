@@ -49,7 +49,7 @@ export default function Sidebar() {
           "text-xl font-bold font-poppins transition-opacity duration-200",
           collapsed ? "opacity-0 w-0 overflow-hidden" : "opacity-100"
         )}>
-          <span className="text-primary">Game</span>
+          <span className="text-primary">GameStore</span>
           <span className="text-secondary">Admin</span>
         </h1>
         <Button 
