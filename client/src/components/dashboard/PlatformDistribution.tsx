@@ -21,12 +21,12 @@ export default function PlatformDistribution({
   platforms, 
   isLoading = false 
 }: PlatformDistributionProps) {
-  // Define vibrant colors for platforms
+  // Define eye-catching, vibrant platform-themed colors
   const platformData = [
-    { name: "PC", percentage: platforms.pc, color: "bg-indigo-600" },
-    { name: "PlayStation 5", percentage: platforms.ps5, color: "bg-blue-500" },
-    { name: "Xbox Series X", percentage: platforms.xsx, color: "bg-emerald-500" },
-    { name: "Nintendo Switch", percentage: platforms.switch, color: "bg-rose-500" },
+    { name: "PC", percentage: platforms.pc, color: "bg-gradient-to-r from-purple-700 to-violet-500" },
+    { name: "PlayStation 5", percentage: platforms.ps5, color: "bg-gradient-to-r from-blue-600 to-cyan-400" },
+    { name: "Xbox Series X", percentage: platforms.xsx, color: "bg-gradient-to-r from-green-600 to-lime-400" },
+    { name: "Nintendo Switch", percentage: platforms.switch, color: "bg-gradient-to-r from-red-600 to-pink-400" },
   ];
 
   return (

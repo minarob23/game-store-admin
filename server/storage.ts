@@ -6,6 +6,9 @@ import {
   type Game,
   type InsertGame
 } from "@shared/schema";
+import * as fs from 'fs';
+import * as path from 'path';
+import { parseVGSalesData, convertToGameFormat } from './vg-sales-data';
 
 export interface IStorage {
   // User operations
@@ -129,11 +132,50 @@ export class MemStorage implements IStorage {
   
   // Helper method to create sample games
   private createSampleGames() {
+    try {
+      // Try to read the VGSales data
+      const vgSalesPath = path.join(process.cwd(), 'vgsales.csv');
+      
+      if (fs.existsSync(vgSalesPath)) {
+        // Read the CSV file
+        const csvData = fs.readFileSync(vgSalesPath, 'utf8');
+        
+        // Parse the CSV data
+        const vgSalesData = parseVGSalesData(csvData);
+        
+        // Convert to our Game format
+        const gameData = convertToGameFormat(vgSalesData);
+        
+        // Add the games to our storage
+        gameData.forEach(game => {
+          const insertGame: InsertGame = {
+            title: game.title,
+            description: game.description,
+            releaseDate: game.releaseDate,
+            platforms: game.platforms,
+            genre: game.genre,
+            developer: game.developer,
+            publisher: game.publisher,
+            price: game.price,
+            stock: game.stock,
+            imageUrl: game.imageUrl
+          };
+          this.createGame(insertGame);
+        });
+        
+        console.log(`Loaded ${gameData.length} games from VGSales data`);
+        return;
+      }
+    } catch (error) {
+      console.error('Error loading VGSales data:', error);
+    }
+    
+    // Fallback to original sample games if VGSales data can't be loaded
     const sampleGames: InsertGame[] = [
       {
         title: "Cyberpunk 2077",
         description: "Cyberpunk 2077 is an open-world, action-adventure story set in Night City, a megalopolis obsessed with power, glamour and body modification.",
-        releaseDate: new Date("2020-12-10"),
+        releaseDate: "2020-12-10",
         platforms: { pc: true, ps5: true, xsx: true, switch: false },
         genre: "RPG",
         developer: "CD Projekt Red",
@@ -145,7 +187,7 @@ export class MemStorage implements IStorage {
       {
         title: "Elden Ring",
         description: "Elden Ring is an action RPG that takes place in the Lands Between, a realm ruled by demigods who possess fragments of the titular Elden Ring.",
-        releaseDate: new Date("2022-02-25"),
+        releaseDate: "2022-02-25",
         platforms: { pc: true, ps5: true, xsx: true, switch: false },
         genre: "Action RPG",
         developer: "FromSoftware",
@@ -157,7 +199,7 @@ export class MemStorage implements IStorage {
       {
         title: "God of War: Ragnarök",
         description: "God of War Ragnarök is an action-adventure game that continues the story of Kratos and his son Atreus as they prepare for Ragnarök.",
-        releaseDate: new Date("2022-11-09"),
+        releaseDate: "2022-11-09",
         platforms: { pc: false, ps5: true, xsx: false, switch: false },
         genre: "Action Adventure",
         developer: "Santa Monica Studio",
@@ -169,7 +211,7 @@ export class MemStorage implements IStorage {
       {
         title: "Starfield",
         description: "Starfield is the first new universe in 25 years from Bethesda Game Studios, the creators of The Elder Scrolls V: Skyrim and Fallout 4.",
-        releaseDate: new Date("2023-09-06"),
+        releaseDate: "2023-09-06",
         platforms: { pc: true, ps5: false, xsx: true, switch: false },
         genre: "RPG",
         developer: "Bethesda Game Studios",
@@ -181,7 +223,7 @@ export class MemStorage implements IStorage {
       {
         title: "The Legend of Zelda: Tears of the Kingdom",
         description: "The Legend of Zelda: Tears of the Kingdom is the sequel to The Legend of Zelda: Breath of the Wild.",
-        releaseDate: new Date("2023-05-12"),
+        releaseDate: "2023-05-12",
         platforms: { pc: false, ps5: false, xsx: false, switch: true },
         genre: "Action Adventure",
         developer: "Nintendo",
