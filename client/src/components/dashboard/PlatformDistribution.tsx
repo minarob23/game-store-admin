@@ -19,41 +19,41 @@ export default function PlatformDistribution({
   // Define common platform data with eye-catching, vibrant themed colors
   const platformColorMap: Record<string, string> = {
     // PC
-    pc: "bg-gradient-to-r from-indigo-600 to-violet-500",
+    pc: "bg-gradient-to-r from-purple-600 to-purple-400",
     
     // PlayStation family
-    ps: "bg-gradient-to-r from-blue-900 to-sky-600",
-    ps2: "bg-gradient-to-r from-blue-800 to-sky-500",
-    ps3: "bg-gradient-to-r from-blue-700 to-sky-400",
-    ps4: "bg-gradient-to-r from-blue-600 to-sky-300",
-    ps5: "bg-gradient-to-r from-blue-500 to-sky-400",
-    psv: "bg-gradient-to-r from-cyan-700 to-blue-400",
-    psp: "bg-gradient-to-r from-cyan-600 to-blue-500",
-    vita: "bg-gradient-to-r from-cyan-500 to-blue-400",
+    ps: "bg-gradient-to-r from-pink-600 to-pink-400",
+    ps2: "bg-gradient-to-r from-pink-700 to-pink-500",
+    ps3: "bg-gradient-to-r from-pink-800 to-pink-600",
+    ps4: "bg-gradient-to-r from-pink-900 to-pink-700",
+    ps5: "bg-gradient-to-r from-fuchsia-600 to-fuchsia-400",
+    psv: "bg-gradient-to-r from-fuchsia-700 to-fuchsia-500",
+    psp: "bg-gradient-to-r from-fuchsia-800 to-fuchsia-600",
+    vita: "bg-gradient-to-r from-fuchsia-900 to-fuchsia-700",
     
     // Xbox family
-    xbox: "bg-gradient-to-r from-green-900 to-lime-600",
-    x360: "bg-gradient-to-r from-green-800 to-lime-500",
-    xone: "bg-gradient-to-r from-green-700 to-lime-400",
-    xsx: "bg-gradient-to-r from-green-600 to-lime-500",
+    xbox: "bg-gradient-to-r from-amber-600 to-amber-400",
+    x360: "bg-gradient-to-r from-amber-700 to-amber-500",
+    xone: "bg-gradient-to-r from-amber-800 to-amber-600",
+    xsx: "bg-gradient-to-r from-amber-900 to-amber-700",
     
     // Nintendo family
-    switch: "bg-gradient-to-r from-rose-600 to-red-400",
-    wii: "bg-gradient-to-r from-rose-700 to-red-500",
-    wiiu: "bg-gradient-to-r from-rose-800 to-red-600",
-    n64: "bg-gradient-to-r from-amber-600 to-yellow-400",
-    gc: "bg-gradient-to-r from-purple-700 to-fuchsia-500",
-    snes: "bg-gradient-to-r from-slate-600 to-neutral-400",
-    nes: "bg-gradient-to-r from-red-900 to-rose-700",
-    gb: "bg-gradient-to-r from-emerald-800 to-green-600",
-    gba: "bg-gradient-to-r from-violet-800 to-purple-600",
-    ds: "bg-gradient-to-r from-zinc-600 to-slate-400",
-    "3ds": "bg-gradient-to-r from-orange-600 to-amber-400",
+    switch: "bg-gradient-to-r from-teal-600 to-teal-400",
+    wii: "bg-gradient-to-r from-teal-700 to-teal-500",
+    wiiu: "bg-gradient-to-r from-teal-800 to-teal-600",
+    n64: "bg-gradient-to-r from-cyan-600 to-cyan-400",
+    gc: "bg-gradient-to-r from-cyan-700 to-cyan-500",
+    snes: "bg-gradient-to-r from-cyan-800 to-cyan-600",
+    nes: "bg-gradient-to-r from-cyan-900 to-cyan-700",
+    gb: "bg-gradient-to-r from-indigo-600 to-indigo-400",
+    gba: "bg-gradient-to-r from-indigo-700 to-indigo-500",
+    ds: "bg-gradient-to-r from-indigo-800 to-indigo-600",
+    "3ds": "bg-gradient-to-r from-indigo-900 to-indigo-700",
     
     // Other platforms
-    sega: "bg-gradient-to-r from-blue-800 to-indigo-500",
-    mobile: "bg-gradient-to-r from-teal-600 to-emerald-400",
-    other: "bg-gradient-to-r from-stone-600 to-zinc-400",
+    sega: "bg-gradient-to-r from-green-600 to-green-400",
+    mobile: "bg-gradient-to-r from-green-700 to-green-500",
+    other: "bg-gradient-to-r from-gray-600 to-gray-400",
   };
 
   // Format platform names for display
