@@ -205,8 +205,12 @@ export async function registerRoutes(app: Express): Promise<Server> {
       // Get platform distribution
       const platformCounts: Record<string, number> = {};
       
+      // Get genre distribution
+      const genreCounts: Record<string, number> = {};
+      
       games.forEach(game => {
         try {
+          // Count platforms
           const gamePlatforms = game.platforms as Record<string, boolean>;
           if (gamePlatforms) {
             for (const [platform, isAvailable] of Object.entries(gamePlatforms)) {
@@ -218,18 +222,31 @@ export async function registerRoutes(app: Express): Promise<Server> {
               }
             }
           }
+          
+          // Count genres
+          if (game.genre) {
+            if (!genreCounts[game.genre]) {
+              genreCounts[game.genre] = 0;
+            }
+            genreCounts[game.genre]++;
+          }
         } catch (err) {
-          console.error("Error processing game platforms:", err);
+          console.error("Error processing game data:", err);
         }
       });
       
-      // Calculate percentages - ensure we always have values even if zero
+      // Calculate platform percentages
       const totalPlatformCount = Object.values(platformCounts).reduce((sum, count) => sum + count, 0) || 1; // Avoid division by zero
-      
-      // Calculate percentage for each platform
       const platformPercentages: Record<string, number> = {};
       Object.entries(platformCounts).forEach(([platform, count]) => {
         platformPercentages[platform] = Math.round((count / totalPlatformCount) * 100);
+      });
+      
+      // Calculate genre percentages
+      const totalGenreCount = Object.values(genreCounts).reduce((sum, count) => sum + count, 0) || 1; // Avoid division by zero
+      const genrePercentages: Record<string, number> = {};
+      Object.entries(genreCounts).forEach(([genre, count]) => {
+        genrePercentages[genre] = Math.round((count / totalGenreCount) * 100);
       });
       
       // Get recent games (last 5 added)
@@ -246,6 +263,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
           revenue: revenue.toFixed(2)
         },
         platforms: platformPercentages,
+        genres: genrePercentages,
         recentGames
       });
     } catch (error) {

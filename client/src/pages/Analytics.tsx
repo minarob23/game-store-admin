@@ -20,6 +20,7 @@ import {
 import { useToast } from "@/hooks/use-toast";
 import { Skeleton } from "@/components/ui/skeleton";
 import { formatCurrency } from "@/lib/utils";
+import GenreDistribution from "@/components/analytics/GenreDistribution";
 
 export default function Analytics() {
   const { toast } = useToast();
@@ -34,12 +35,8 @@ export default function Analytics() {
       outOfStock: number;
       revenue: string;
     },
-    platforms: {
-      pc: number;
-      ps5: number;
-      xsx: number;
-      switch: number;
-    },
+    platforms: Record<string, number>,
+    genres: Record<string, number>,
     recentGames: any[]
   }>({
     queryKey: ['/api/dashboard/stats'],
@@ -114,6 +111,7 @@ export default function Analytics() {
         <TabsList>
           <TabsTrigger value="overview">Overview</TabsTrigger>
           <TabsTrigger value="platforms">Platform Distribution</TabsTrigger>
+          <TabsTrigger value="genres">Genre Distribution</TabsTrigger>
           <TabsTrigger value="inventory">Inventory Status</TabsTrigger>
           <TabsTrigger value="revenue">Revenue Trend</TabsTrigger>
         </TabsList>
@@ -254,6 +252,60 @@ export default function Analytics() {
               )}
             </CardContent>
           </Card>
+        </TabsContent>
+
+        {/* Genre Distribution Tab */}
+        <TabsContent value="genres" className="mt-6">
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+            <div className="lg:col-span-1">
+              <GenreDistribution 
+                genres={data?.genres || {}} 
+                isLoading={isLoading} 
+              />
+            </div>
+            <div className="lg:col-span-1">
+              <Card>
+                <CardHeader>
+                  <CardTitle>Genre Popularity</CardTitle>
+                  <CardDescription>Game distribution across different genres</CardDescription>
+                </CardHeader>
+                <CardContent className="h-96">
+                  {isLoading ? (
+                    <div className="w-full h-full flex items-center justify-center">
+                      <Skeleton className="h-80 w-80 rounded-full" />
+                    </div>
+                  ) : (
+                    <ResponsiveContainer width="100%" height="100%">
+                      <PieChart>
+                        <Pie
+                          data={Object.entries(data?.genres || {})
+                            .filter(([_, value]) => value > 0)
+                            .slice(0, 6)
+                            .map(([name, value]) => ({ name, value }))}
+                          cx="50%"
+                          cy="50%"
+                          labelLine={true}
+                          outerRadius={150}
+                          fill="#8884d8"
+                          dataKey="value"
+                          label={({ name, value, percent }) => `${name}: ${value} (${(percent * 100).toFixed(0)}%)`}
+                        >
+                          {Object.entries(data?.genres || {})
+                            .filter(([_, value]) => value > 0)
+                            .slice(0, 6)
+                            .map(([_, __], index) => (
+                              <Cell key={`cell-${index}`} fill={PLATFORM_COLORS[index % PLATFORM_COLORS.length]} />
+                            ))}
+                        </Pie>
+                        <Tooltip formatter={(value) => [`${value}%`, "Percentage"]} />
+                        <Legend />
+                      </PieChart>
+                    </ResponsiveContainer>
+                  )}
+                </CardContent>
+              </Card>
+            </div>
+          </div>
         </TabsContent>
         
         {/* Inventory Status Tab */}
