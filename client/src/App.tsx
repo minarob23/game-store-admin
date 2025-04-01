@@ -5,6 +5,7 @@ import { Toaster } from "@/components/ui/toaster";
 import NotFound from "@/pages/not-found";
 import Dashboard from "@/pages/Dashboard";
 import Inventory from "@/pages/Inventory";
+import Analytics from "@/pages/Analytics";
 import Settings from "@/pages/Settings";
 import Login from "@/pages/Login";
 import { AuthProvider } from "./context/AuthContext";
@@ -66,6 +67,12 @@ function AppRoutes() {
       <Route path="/inventory">
         <AdminLayout>
           <ProtectedRoute component={Inventory} />
+        </AdminLayout>
+      </Route>
+      
+      <Route path="/analytics">
+        <AdminLayout>
+          <ProtectedRoute component={Analytics} />
         </AdminLayout>
       </Route>
       

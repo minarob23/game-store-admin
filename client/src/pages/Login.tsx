@@ -23,6 +23,7 @@ import {
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { LogIn } from "lucide-react";
+import { ThemeToggle } from "@/components/ui/theme-toggle";
 
 export default function Login() {
   const { login } = useAuth();
@@ -52,12 +53,15 @@ export default function Login() {
   return (
     <div className="min-h-screen flex items-center justify-center bg-background p-4">
       <Card className="w-full max-w-md">
-        <CardHeader className="text-center">
-          <CardTitle className="text-3xl font-bold font-poppins">
-            <span className="text-primary">Game</span>
-            <span className="text-secondary">Admin</span>
-          </CardTitle>
-          <CardDescription>
+        <CardHeader>
+          <div className="flex justify-between items-center mb-2">
+            <CardTitle className="text-3xl font-bold font-poppins">
+              <span className="text-primary">Game</span>
+              <span className="text-secondary">Admin</span>
+            </CardTitle>
+            <ThemeToggle />
+          </div>
+          <CardDescription className="text-center">
             Sign in to manage your game inventory
           </CardDescription>
         </CardHeader>
