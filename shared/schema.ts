@@ -5,6 +5,7 @@ import { z } from "zod";
 // Admin User Schema
 export const users = pgTable("users", {
   id: serial("id").primaryKey(),
+  fullName: text("full_name").notNull().default(""),
   username: text("username").notNull().unique(),
   password: text("password").notNull(),
   email: text("email").notNull().unique(),
@@ -13,6 +14,7 @@ export const users = pgTable("users", {
 });
 
 export const insertUserSchema = createInsertSchema(users).pick({
+  fullName: true,
   username: true,
   password: true,
   email: true,

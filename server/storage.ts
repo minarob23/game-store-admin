@@ -41,6 +41,7 @@ export class MemStorage implements IStorage {
     
     // Create a default admin user
     this.createUser({
+      fullName: "Admin User",
       username: "admin",
       password: "admin123", // In a real app, this would be hashed
       email: "admin@gamestore.com",

@@ -30,8 +30,9 @@ import { useTheme } from "@/components/ui/theme-provider";
 
 // Profile form schema
 const profileFormSchema = z.object({
+  fullName: z.string().min(2, "Full name must be at least 2 characters"),
   username: z.string().min(2, "Username must be at least 2 characters"),
-  email: z.string().min(6, "Password must be at least 6 characters"),
+  email: z.string().email("Please enter a valid email address"),
 });
 
 // Password form schema
@@ -54,8 +55,9 @@ export default function Settings() {
   const profileForm = useForm({
     resolver: zodResolver(profileFormSchema),
     defaultValues: {
+      fullName: user?.fullName || "",
       username: user?.username || "",
-      email: "", // Keep password field empty by default
+      email: user?.email || "",
     },
   });
   
@@ -116,6 +118,23 @@ export default function Settings() {
                 <form onSubmit={profileForm.handleSubmit(onProfileSubmit)} className="space-y-4">
                   <FormField
                     control={profileForm.control}
+                    name="fullName"
+                    render={({ field }) => (
+                      <FormItem>
+                        <FormLabel>Full Name</FormLabel>
+                        <FormControl>
+                          <Input {...field} />
+                        </FormControl>
+                        <FormDescription>
+                          Your complete name.
+                        </FormDescription>
+                        <FormMessage />
+                      </FormItem>
+                    )}
+                  />
+                  
+                  <FormField
+                    control={profileForm.control}
                     name="username"
                     render={({ field }) => (
                       <FormItem>
@@ -136,12 +155,12 @@ export default function Settings() {
                     name="email"
                     render={({ field }) => (
                       <FormItem>
-                        <FormLabel>Password</FormLabel>
+                        <FormLabel>Email</FormLabel>
                         <FormControl>
-                          <Input type="password" {...field} />
+                          <Input type="email" {...field} />
                         </FormControl>
                         <FormDescription>
-                          Enter your password to confirm changes.
+                          Your email address for account recovery.
                         </FormDescription>
                         <FormMessage />
                       </FormItem>
