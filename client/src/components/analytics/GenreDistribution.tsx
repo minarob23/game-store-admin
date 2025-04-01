@@ -14,22 +14,22 @@ export default function GenreDistribution({
 }: GenreDistributionProps) {
   // Define genre data with vibrant, eye-catching colors
   const genreColorMap: Record<string, string> = {
-    Action: "bg-gradient-to-r from-pink-600 to-pink-400",
-    Adventure: "bg-gradient-to-r from-purple-600 to-purple-400",
-    Sports: "bg-gradient-to-r from-amber-600 to-amber-400",
-    Racing: "bg-gradient-to-r from-amber-700 to-amber-500",
-    RPG: "bg-gradient-to-r from-indigo-600 to-indigo-400",
-    Puzzle: "bg-gradient-to-r from-teal-600 to-teal-400",
-    Strategy: "bg-gradient-to-r from-cyan-600 to-cyan-400",
-    Shooter: "bg-gradient-to-r from-fuchsia-600 to-fuchsia-400",
-    Simulation: "bg-gradient-to-r from-green-600 to-green-400",
-    Fighting: "bg-gradient-to-r from-orange-600 to-orange-400",
-    "Platformer": "bg-gradient-to-r from-blue-600 to-blue-400",
-    "Educational": "bg-gradient-to-r from-emerald-600 to-emerald-400",
-    "Casual": "bg-gradient-to-r from-rose-600 to-rose-400",
-    "Music/Rhythm": "bg-gradient-to-r from-violet-600 to-violet-400",
-    "Role-Playing": "bg-gradient-to-r from-indigo-700 to-indigo-500",
-    "Misc": "bg-gradient-to-r from-gray-600 to-gray-400",
+    Action: "bg-gradient-to-r from-emerald-600 to-emerald-400",
+    Adventure: "bg-gradient-to-r from-blue-600 to-blue-400",
+    Sports: "bg-gradient-to-r from-violet-600 to-violet-400",
+    Racing: "bg-gradient-to-r from-violet-700 to-violet-500",
+    RPG: "bg-gradient-to-r from-sky-600 to-sky-400",
+    Puzzle: "bg-gradient-to-r from-rose-600 to-rose-400",
+    Strategy: "bg-gradient-to-r from-yellow-600 to-yellow-400",
+    Shooter: "bg-gradient-to-r from-orange-600 to-orange-400",
+    Simulation: "bg-gradient-to-r from-teal-600 to-teal-400",
+    Fighting: "bg-gradient-to-r from-red-600 to-red-400",
+    "Platformer": "bg-gradient-to-r from-cyan-600 to-cyan-400",
+    "Educational": "bg-gradient-to-r from-lime-600 to-lime-400",
+    "Casual": "bg-gradient-to-r from-amber-600 to-amber-400",
+    "Music/Rhythm": "bg-gradient-to-r from-purple-600 to-purple-400",
+    "Role-Playing": "bg-gradient-to-r from-sky-700 to-sky-500",
+    "Misc": "bg-gradient-to-r from-slate-600 to-slate-400",
   };
 
   // Generate genre data from the incoming genres object
