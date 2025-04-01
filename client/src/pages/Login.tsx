@@ -33,7 +33,7 @@ export default function Login() {
   const form = useForm<LoginCredentials>({
     resolver: zodResolver(loginSchema),
     defaultValues: {
-      username: "",
+      usernameOrEmail: "",
       password: "",
     },
   });
@@ -70,12 +70,12 @@ export default function Login() {
             <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
               <FormField
                 control={form.control}
-                name="username"
+                name="usernameOrEmail"
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel>Username</FormLabel>
+                    <FormLabel>Username or Email</FormLabel>
                     <FormControl>
-                      <Input placeholder="Enter your username" {...field} />
+                      <Input placeholder="Enter your username or email" {...field} />
                     </FormControl>
                     <FormMessage />
                   </FormItem>
@@ -116,7 +116,7 @@ export default function Login() {
         </CardContent>
         <CardFooter className="text-sm text-center text-muted-foreground">
           <div className="w-full">
-            Default credentials: username <span className="font-semibold">admin</span> / password <span className="font-semibold">admin123</span>
+            Default credentials: username or email <span className="font-semibold">admin</span> / <span className="font-semibold">admin@gamestore.com</span> with password <span className="font-semibold">admin123</span>
           </div>
         </CardFooter>
       </Card>

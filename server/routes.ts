@@ -44,7 +44,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
   app.post("/api/login", async (req, res) => {
     try {
       const credentials = loginSchema.parse(req.body);
-      const user = await storage.validateUser(credentials.username, credentials.password);
+      const user = await storage.validateUser(credentials.usernameOrEmail, credentials.password);
       
       if (user) {
         req.session.userId = user.id;
@@ -203,20 +203,18 @@ export async function registerRoutes(app: Express): Promise<Server> {
       const revenue = games.reduce((total, game) => total + (game.price * game.stock), 0);
       
       // Get platform distribution
-      const platforms = {
-        pc: 0,
-        ps5: 0,
-        xsx: 0,
-        switch: 0
-      };
+      const platformCounts: Record<string, number> = {};
       
       games.forEach(game => {
         try {
           const gamePlatforms = game.platforms as Record<string, boolean>;
           if (gamePlatforms) {
             for (const [platform, isAvailable] of Object.entries(gamePlatforms)) {
-              if (isAvailable && platform in platforms) {
-                platforms[platform as keyof typeof platforms]++;
+              if (isAvailable) {
+                if (!platformCounts[platform]) {
+                  platformCounts[platform] = 0;
+                }
+                platformCounts[platform]++;
               }
             }
           }
@@ -226,13 +224,13 @@ export async function registerRoutes(app: Express): Promise<Server> {
       });
       
       // Calculate percentages - ensure we always have values even if zero
-      const totalPlatformCount = Object.values(platforms).reduce((sum, count) => sum + count, 0) || 1; // Avoid division by zero
-      const platformPercentages = {
-        pc: Math.round((platforms.pc / totalPlatformCount) * 100),
-        ps5: Math.round((platforms.ps5 / totalPlatformCount) * 100),
-        xsx: Math.round((platforms.xsx / totalPlatformCount) * 100),
-        switch: Math.round((platforms.switch / totalPlatformCount) * 100)
-      };
+      const totalPlatformCount = Object.values(platformCounts).reduce((sum, count) => sum + count, 0) || 1; // Avoid division by zero
+      
+      // Calculate percentage for each platform
+      const platformPercentages: Record<string, number> = {};
+      Object.entries(platformCounts).forEach(([platform, count]) => {
+        platformPercentages[platform] = Math.round((count / totalPlatformCount) * 100);
+      });
       
       // Get recent games (last 5 added)
       const recentGames = [...games]

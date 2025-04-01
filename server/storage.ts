@@ -71,8 +71,22 @@ export class MemStorage implements IStorage {
     return user;
   }
   
-  async validateUser(username: string, password: string): Promise<User | undefined> {
-    const user = await this.getUserByUsername(username);
+  async validateUser(usernameOrEmail: string, password: string): Promise<User | undefined> {
+    // Check if the input is a username or an email
+    const isEmail = usernameOrEmail.includes('@');
+    
+    let user: User | undefined;
+    
+    if (isEmail) {
+      // Search by email
+      user = Array.from(this.users.values()).find(
+        (u) => u.email === usernameOrEmail,
+      );
+    } else {
+      // Search by username
+      user = await this.getUserByUsername(usernameOrEmail);
+    }
+    
     if (user && user.password === password) {
       // Update last login
       const updatedUser = { ...user, lastLogin: new Date() };

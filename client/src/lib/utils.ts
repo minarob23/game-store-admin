@@ -30,9 +30,35 @@ export function formatCurrency(amount: number): string {
 export function formatPlatforms(platforms: Record<string, boolean>): string {
   const platformMap: Record<string, string> = {
     pc: 'PC',
+    // PlayStation Family
     ps5: 'PS5',
-    xsx: 'XSX',
+    ps4: 'PS4',
+    ps3: 'PS3',
+    ps2: 'PS2',
+    ps: 'PlayStation',
+    // Xbox Family
+    xsx: 'Xbox Series X',
+    xone: 'Xbox One',
+    x360: 'Xbox 360',
+    xbox: 'Xbox',
+    // Nintendo Family
     switch: 'Switch',
+    wiiu: 'Wii U',
+    wii: 'Wii',
+    '3ds': '3DS',
+    ds: 'DS',
+    // Other platforms
+    psp: 'PSP',
+    vita: 'PS Vita',
+    gc: 'GameCube',
+    n64: 'N64',
+    gb: 'Game Boy',
+    gba: 'GBA',
+    snes: 'SNES',
+    nes: 'NES',
+    sega: 'Sega',
+    mobile: 'Mobile',
+    other: 'Other',
   };
   
   return Object.entries(platforms)
@@ -55,10 +81,37 @@ export function getStockStatus(stock: number): { label: string; className: strin
 // Platform options for select dropdowns
 export const platformOptions = [
   { value: 'all', label: 'All Platforms' },
+  // PC
   { value: 'pc', label: 'PC' },
-  { value: 'ps5', label: 'PlayStation 5' },
+  // PlayStation Family
+  { value: 'ps5', label: 'PS5' },
+  { value: 'ps4', label: 'PS4' },
+  { value: 'ps3', label: 'PS3' },
+  { value: 'ps2', label: 'PS2' },
+  { value: 'ps', label: 'PlayStation' },
+  { value: 'psp', label: 'PSP' },
+  { value: 'vita', label: 'PS Vita' },
+  // Xbox Family
   { value: 'xsx', label: 'Xbox Series X' },
+  { value: 'xone', label: 'Xbox One' },
+  { value: 'x360', label: 'Xbox 360' },
+  { value: 'xbox', label: 'Xbox' },
+  // Nintendo Family
   { value: 'switch', label: 'Nintendo Switch' },
+  { value: 'wiiu', label: 'Wii U' },
+  { value: 'wii', label: 'Wii' },
+  { value: '3ds', label: '3DS' },
+  { value: 'ds', label: 'DS' },
+  { value: 'gc', label: 'GameCube' },
+  { value: 'n64', label: 'Nintendo 64' },
+  { value: 'snes', label: 'Super Nintendo' },
+  { value: 'nes', label: 'NES' },
+  { value: 'gba', label: 'Game Boy Advance' },
+  { value: 'gb', label: 'Game Boy' },
+  // Other
+  { value: 'sega', label: 'Sega' },
+  { value: 'mobile', label: 'Mobile' },
+  { value: 'other', label: 'Other' },
 ];
 
 // Genre options for select dropdowns
@@ -66,14 +119,14 @@ export const genreOptions = [
   { value: 'none', label: 'Select Genre' },
   { value: 'action', label: 'Action' },
   { value: 'adventure', label: 'Adventure' },
-  { value: 'action-adventure', label: 'Action Adventure' },
-  { value: 'rpg', label: 'RPG' },
-  { value: 'action-rpg', label: 'Action RPG' },
-  { value: 'strategy', label: 'Strategy' },
+  { value: 'fighting', label: 'Fighting' },
+  { value: 'platform', label: 'Platform' },
+  { value: 'puzzle', label: 'Puzzle' },
+  { value: 'racing', label: 'Racing' },
+  { value: 'role-playing', label: 'Role-Playing' },
+  { value: 'shooter', label: 'Shooter' },
   { value: 'simulation', label: 'Simulation' },
   { value: 'sports', label: 'Sports' },
-  { value: 'racing', label: 'Racing' },
-  { value: 'shooter', label: 'Shooter' },
-  { value: 'puzzle', label: 'Puzzle' },
-  { value: 'indie', label: 'Indie' },
+  { value: 'strategy', label: 'Strategy' },
+  { value: 'misc', label: 'Miscellaneous' },
 ];

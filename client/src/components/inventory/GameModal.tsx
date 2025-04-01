@@ -52,8 +52,15 @@ export default function GameModal({ open, onOpenChange, onSave, game, title }: G
       platforms: {
         pc: false,
         ps5: false,
+        ps4: false,
+        ps3: false,
         xsx: false,
-        switch: false
+        xone: false,
+        x360: false,
+        switch: false,
+        wiiu: false,
+        wii: false,
+        "3ds": false
       },
       genre: "none",
       developer: "",
@@ -84,8 +91,15 @@ export default function GameModal({ open, onOpenChange, onSave, game, title }: G
         platforms: {
           pc: false,
           ps5: false,
+          ps4: false,
+          ps3: false,
           xsx: false,
-          switch: false
+          xone: false,
+          x360: false,
+          switch: false,
+          wiiu: false,
+          wii: false,
+          "3ds": false
         },
         genre: "none",
         developer: "",
@@ -272,9 +286,10 @@ export default function GameModal({ open, onOpenChange, onSave, game, title }: G
               />
               
               {/* Platforms */}
-              <FormItem>
+              <FormItem className="md:col-span-2">
                 <FormLabel>Platforms *</FormLabel>
-                <div className="space-y-2">
+                <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-2">
+                  {/* PC */}
                   <FormField
                     control={form.control}
                     name="platforms.pc"
@@ -286,16 +301,12 @@ export default function GameModal({ open, onOpenChange, onSave, game, title }: G
                             onCheckedChange={field.onChange}
                           />
                         </FormControl>
-                        <label
-                          htmlFor="pc"
-                          className="text-sm font-medium leading-none cursor-pointer"
-                        >
-                          PC
-                        </label>
+                        <label className="text-sm">PC</label>
                       </div>
                     )}
                   />
                   
+                  {/* PlayStation Family */}
                   <FormField
                     control={form.control}
                     name="platforms.ps5"
@@ -307,16 +318,42 @@ export default function GameModal({ open, onOpenChange, onSave, game, title }: G
                             onCheckedChange={field.onChange}
                           />
                         </FormControl>
-                        <label
-                          htmlFor="ps5"
-                          className="text-sm font-medium leading-none cursor-pointer"
-                        >
-                          PlayStation 5
-                        </label>
+                        <label className="text-sm">PS5</label>
+                      </div>
+                    )}
+                  />
+                  <FormField
+                    control={form.control}
+                    name="platforms.ps4"
+                    render={({ field }) => (
+                      <div className="flex items-center space-x-2">
+                        <FormControl>
+                          <Checkbox
+                            checked={field.value}
+                            onCheckedChange={field.onChange}
+                          />
+                        </FormControl>
+                        <label className="text-sm">PS4</label>
+                      </div>
+                    )}
+                  />
+                  <FormField
+                    control={form.control}
+                    name="platforms.ps3"
+                    render={({ field }) => (
+                      <div className="flex items-center space-x-2">
+                        <FormControl>
+                          <Checkbox
+                            checked={field.value}
+                            onCheckedChange={field.onChange}
+                          />
+                        </FormControl>
+                        <label className="text-sm">PS3</label>
                       </div>
                     )}
                   />
                   
+                  {/* Xbox Family */}
                   <FormField
                     control={form.control}
                     name="platforms.xsx"
@@ -328,16 +365,42 @@ export default function GameModal({ open, onOpenChange, onSave, game, title }: G
                             onCheckedChange={field.onChange}
                           />
                         </FormControl>
-                        <label
-                          htmlFor="xsx"
-                          className="text-sm font-medium leading-none cursor-pointer"
-                        >
-                          Xbox Series X
-                        </label>
+                        <label className="text-sm">Xbox Series X</label>
+                      </div>
+                    )}
+                  />
+                  <FormField
+                    control={form.control}
+                    name="platforms.xone"
+                    render={({ field }) => (
+                      <div className="flex items-center space-x-2">
+                        <FormControl>
+                          <Checkbox
+                            checked={field.value}
+                            onCheckedChange={field.onChange}
+                          />
+                        </FormControl>
+                        <label className="text-sm">Xbox One</label>
+                      </div>
+                    )}
+                  />
+                  <FormField
+                    control={form.control}
+                    name="platforms.x360"
+                    render={({ field }) => (
+                      <div className="flex items-center space-x-2">
+                        <FormControl>
+                          <Checkbox
+                            checked={field.value}
+                            onCheckedChange={field.onChange}
+                          />
+                        </FormControl>
+                        <label className="text-sm">Xbox 360</label>
                       </div>
                     )}
                   />
                   
+                  {/* Nintendo Family */}
                   <FormField
                     control={form.control}
                     name="platforms.switch"
@@ -349,12 +412,52 @@ export default function GameModal({ open, onOpenChange, onSave, game, title }: G
                             onCheckedChange={field.onChange}
                           />
                         </FormControl>
-                        <label
-                          htmlFor="switch"
-                          className="text-sm font-medium leading-none cursor-pointer"
-                        >
-                          Nintendo Switch
-                        </label>
+                        <label className="text-sm">Nintendo Switch</label>
+                      </div>
+                    )}
+                  />
+                  <FormField
+                    control={form.control}
+                    name="platforms.wiiu"
+                    render={({ field }) => (
+                      <div className="flex items-center space-x-2">
+                        <FormControl>
+                          <Checkbox
+                            checked={field.value}
+                            onCheckedChange={field.onChange}
+                          />
+                        </FormControl>
+                        <label className="text-sm">Wii U</label>
+                      </div>
+                    )}
+                  />
+                  <FormField
+                    control={form.control}
+                    name="platforms.wii"
+                    render={({ field }) => (
+                      <div className="flex items-center space-x-2">
+                        <FormControl>
+                          <Checkbox
+                            checked={field.value}
+                            onCheckedChange={field.onChange}
+                          />
+                        </FormControl>
+                        <label className="text-sm">Wii</label>
+                      </div>
+                    )}
+                  />
+                  <FormField
+                    control={form.control}
+                    name="platforms.3ds"
+                    render={({ field }) => (
+                      <div className="flex items-center space-x-2">
+                        <FormControl>
+                          <Checkbox
+                            checked={field.value}
+                            onCheckedChange={field.onChange}
+                          />
+                        </FormControl>
+                        <label className="text-sm">Nintendo 3DS</label>
                       </div>
                     )}
                   />

@@ -60,9 +60,35 @@ export type Game = typeof games.$inferSelect;
 // Platform type for validation
 export const platformSchema = z.object({
   pc: z.boolean().optional(),
+  // PlayStation Family
   ps5: z.boolean().optional(),
-  xsx: z.boolean().optional(),
+  ps4: z.boolean().optional(),
+  ps3: z.boolean().optional(),
+  ps2: z.boolean().optional(),
+  ps: z.boolean().optional(), // Original PlayStation
+  // Xbox Family
+  xsx: z.boolean().optional(), // Xbox Series X
+  xone: z.boolean().optional(), // Xbox One
+  x360: z.boolean().optional(), // Xbox 360
+  xbox: z.boolean().optional(), // Original Xbox
+  // Nintendo Family
   switch: z.boolean().optional(),
+  wiiu: z.boolean().optional(),
+  wii: z.boolean().optional(),
+  "3ds": z.boolean().optional(),
+  ds: z.boolean().optional(),
+  // Other platforms
+  psp: z.boolean().optional(),
+  vita: z.boolean().optional(),
+  gc: z.boolean().optional(), // GameCube
+  n64: z.boolean().optional(), // Nintendo 64
+  gb: z.boolean().optional(), // Game Boy
+  gba: z.boolean().optional(), // Game Boy Advance
+  snes: z.boolean().optional(), // Super Nintendo
+  nes: z.boolean().optional(), // Nintendo Entertainment System
+  sega: z.boolean().optional(), // Sega platforms
+  mobile: z.boolean().optional(), // Mobile gaming
+  other: z.boolean().optional(), // Other platforms
 });
 
 export type Platform = z.infer<typeof platformSchema>;
@@ -83,7 +109,7 @@ export const gameFormSchema = insertGameSchema.extend({
 
 // Credentials schema for login
 export const loginSchema = z.object({
-  username: z.string().min(1, "Username is required"),
+  usernameOrEmail: z.string().min(1, "Username or Email is required"),
   password: z.string().min(1, "Password is required"),
 });
 

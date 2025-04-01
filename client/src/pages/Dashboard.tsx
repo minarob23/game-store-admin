@@ -125,7 +125,7 @@ export default function Dashboard() {
           />
           
           <PlatformDistribution 
-            platforms={isLoading ? { pc: 0, ps5: 0, xsx: 0, switch: 0 } : data?.platforms || { pc: 0, ps5: 0, xsx: 0, switch: 0 }} 
+            platforms={isLoading ? {} : data?.platforms || {}} 
             isLoading={isLoading} 
           />
         </div>
