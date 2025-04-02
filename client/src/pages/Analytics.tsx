@@ -414,7 +414,19 @@ export default function Analytics() {
                       <XAxis dataKey="name" />
                       <YAxis tickFormatter={(value) => `$${value}`} />
                       <Tooltip formatter={(value) => [`$${value}`, "Revenue"]} />
-                      <Bar dataKey="value" fill={isDarkTheme ? REVENUE_COLORS.dark : REVENUE_COLORS.light} />
+                      <Bar 
+                        dataKey="value" 
+                        fill={isDarkTheme ? REVENUE_COLORS.dark : REVENUE_COLORS.light}
+                      >
+                        {[
+                          { fill: "#FF6B6B" },
+                          { fill: "#4ECDC4" },
+                          { fill: "#45B7D1" },
+                          { fill: "#96CEB4" }
+                        ].map((entry, index) => (
+                          <Cell key={`cell-${index}`} fill={entry.fill} />
+                        ))}
+                      </Bar>
                     </BarChart>
                   </ResponsiveContainer>
                 )}
