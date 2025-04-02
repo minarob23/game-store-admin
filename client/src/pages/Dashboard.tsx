@@ -271,7 +271,7 @@ export default function Dashboard() {
                   <CardHeader>
                     <CardTitle>Platform Distribution</CardTitle>
                   </CardHeader>
-                  <CardContent className="h-[300px]">
+                  <CardContent className="h-[400px]">
                     <ResponsiveContainer width="100%" height="100%">
                       <PieChart>
                         <Pie
@@ -279,7 +279,7 @@ export default function Dashboard() {
                           cx="50%"
                           cy="50%"
                           labelLine={true}
-                          outerRadius={100}
+                          outerRadius={150}
                           fill="#8884d8"
                           dataKey="value"
                           label={({ name, value, percent }) => `${name}: ${value} (${(percent * 100).toFixed(0)}%)`}
@@ -300,7 +300,7 @@ export default function Dashboard() {
                   <CardHeader>
                     <CardTitle>Genre Distribution</CardTitle>
                   </CardHeader>
-                  <CardContent className="h-[300px]">
+                  <CardContent className="h-[400px]">
                     <ResponsiveContainer width="100%" height="100%">
                       <PieChart>
                         <Pie
@@ -311,7 +311,7 @@ export default function Dashboard() {
                           cx="50%"
                           cy="50%"
                           labelLine={true}
-                          outerRadius={100}
+                          outerRadius={150}
                           fill="#8884d8"
                           dataKey="value"
                           label={({ name, value, percent }) => `${name}: ${value} (${(percent * 100).toFixed(0)}%)`}
@@ -346,7 +346,7 @@ export default function Dashboard() {
                         <XAxis dataKey="name" />
                         <YAxis />
                         <Tooltip />
-                        <Bar dataKey="value" fill="#8884d8" />
+                        <Bar dataKey="value" fill="#2196F3" />
                       </BarChart>
                     </ResponsiveContainer>
                   </CardContent>
@@ -371,8 +371,40 @@ export default function Dashboard() {
                         <XAxis dataKey="month" />
                         <YAxis />
                         <Tooltip formatter={(value) => [`$${value}`, "Revenue"]} />
-                        <Line type="monotone" dataKey="revenue" stroke="#8884d8" strokeWidth={2} />
+                        <Line type="monotone" dataKey="revenue" stroke="#4CAF50" strokeWidth={2} />
                       </LineChart>
+                    </ResponsiveContainer>
+                  </CardContent>
+                </Card>
+
+                {/* Revenue Breakdown */}
+                <Card>
+                  <CardHeader>
+                    <CardTitle>Revenue Breakdown</CardTitle>
+                  </CardHeader>
+                  <CardContent className="h-[300px]">
+                    <ResponsiveContainer width="100%" height="100%">
+                      <BarChart data={[
+                        { name: "PC", value: 3800 },
+                        { name: "PlayStation 5", value: 4200 },
+                        { name: "Xbox Series X", value: 2900 },
+                        { name: "Nintendo Switch", value: 3400 }
+                      ]}>
+                        <CartesianGrid strokeDasharray="3 3" />
+                        <XAxis dataKey="name" />
+                        <YAxis tickFormatter={(value) => `$${value}`} />
+                        <Tooltip formatter={(value) => [`$${value}`, "Revenue"]} />
+                        <Bar dataKey="value">
+                          {[
+                            { fill: "#FF6B6B" },
+                            { fill: "#4ECDC4" },
+                            { fill: "#45B7D1" },
+                            { fill: "#96CEB4" }
+                          ].map((entry, index) => (
+                            <Cell key={`cell-${index}`} fill={entry.fill} />
+                          ))}
+                        </Bar>
+                      </BarChart>
                     </ResponsiveContainer>
                   </CardContent>
                 </Card>
