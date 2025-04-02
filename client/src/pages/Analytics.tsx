@@ -74,7 +74,7 @@ export default function Analytics() {
   ];
   
   // Colors for charts - Different color schemes for each chart type
-  const PLATFORM_COLORS = ["#FF6B6B", "#4ECDC4", "#45B7D1", "#96CEB4", "#FFEEAD", "#D4A5A5"]; // New vibrant theme for platforms
+  const PLATFORM_COLORS = ["#845EC2", "#D65DB1", "#FF6F91", "#FF9671", "#FFC75F", "#F9F871"]; // New colorful theme for platforms
   const INVENTORY_COLORS = {
     light: "#2196F3", // Blue for light theme
     dark: "#64B5F6"   // Lighter blue for dark theme
