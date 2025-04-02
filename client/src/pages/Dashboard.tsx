@@ -467,13 +467,14 @@ export default function Dashboard() {
             </Button>
             <Button onClick={async () => {
               try {
-                await generatePDF('preview-content', 'full-report.pdf');
+                await generateDashboardPDF();
                 toast({
                   title: "Success",
                   description: "Report saved successfully"
                 });
                 setPreviewOpen(false);
               } catch (error) {
+                console.error('PDF generation error:', error);
                 toast({
                   variant: "destructive",
                   title: "Error",
