@@ -468,10 +468,33 @@ export default function Dashboard() {
             </Button>
             <Button onClick={async () => {
               try {
-                await generatePDF('preview-content', 'game-store-report.pdf');
+                toast({
+                  title: "Processing",
+                  description: "Converting report to PDF..."
+                });
+
+                // First convert to image
+                const element = document.getElementById('preview-content');
+                if (!element) throw new Error('Preview content not found');
+                
+                const canvas = await html2canvas(element, {
+                  scale: 2,
+                  useCORS: true,
+                  logging: false
+                });
+                
+                // Create PDF from image
+                const pdf = new jsPDF('p', 'mm', 'a4');
+                const imgData = canvas.toDataURL('image/png');
+                const pdfWidth = pdf.internal.pageSize.getWidth();
+                const pdfHeight = (canvas.height * pdfWidth) / canvas.width;
+                
+                pdf.addImage(imgData, 'PNG', 0, 0, pdfWidth, pdfHeight);
+                pdf.save('game-store-report.pdf');
+                
                 toast({
                   title: "Success",
-                  description: "Report saved successfully"
+                  description: "Report saved successfully as PDF"
                 });
                 setPreviewOpen(false);
               } catch (error) {
