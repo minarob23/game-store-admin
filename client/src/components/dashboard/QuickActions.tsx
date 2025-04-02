@@ -48,25 +48,7 @@ export default function QuickActions({
           onClick={onGenerateReport}
         >
           <BarChart3 className="mr-2 h-4 w-4" />
-          Generate Report
-        </Button>
-
-        <Button 
-          variant="outline"
-          className="w-full"
-          onClick={() => generateDashboardPDF()}
-        >
-          <FileDown className="mr-2 h-4 w-4" />
-          Save Dashboard as PDF
-        </Button>
-
-        <Button 
-          variant="outline"
-          className="w-full"
-          onClick={() => generateAnalyticsPDF()}
-        >
-          <FileDown className="mr-2 h-4 w-4" />
-          Save Analytics as PDF
+          Generate & Preview Report
         </Button>
       </CardContent>
     </Card>

@@ -86,7 +86,7 @@ export default function Dashboard() {
   };
 
   // Handle generate report
-  const handleGenerateReport = () => {
+  const handleGenerateReport = async () => {
     if (!data?.recentGames) {
       toast({
         variant: "destructive",
@@ -96,21 +96,26 @@ export default function Dashboard() {
       return;
     }
 
-    const report = generateInventoryReport(data.recentGames);
-    const blob = new Blob([report], { type: 'text/plain' });
-    const url = window.URL.createObjectURL(blob);
-    const a = document.createElement('a');
-    a.href = url;
-    a.download = `inventory_report_${new Date().toISOString().split('T')[0]}.txt`;
-    document.body.appendChild(a);
-    a.click();
-    window.URL.revokeObjectURL(url);
-    document.body.removeChild(a);
+    try {
+      // Generate PDF content
+      await generatePDF('dashboard-content', 'dashboard-report.pdf');
+      await generatePDF('analytics-content', 'analytics-report.pdf');
 
-    toast({
-      title: "Report generated",
-      description: "Your report has been generated",
-    });
+      // Generate text report
+      const report = generateInventoryReport(data.recentGames);
+      
+      toast({
+        title: "Reports generated",
+        description: "PDF reports have been generated and saved",
+      });
+    } catch (error) {
+      console.error('Error generating reports:', error);
+      toast({
+        variant: "destructive",
+        title: "Error",
+        description: "Failed to generate reports",
+      });
+    }
   };
 
   return (
