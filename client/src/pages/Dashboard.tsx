@@ -468,81 +468,83 @@ export default function Dashboard() {
             </Button>
             <Button onClick={async () => {
               try {
-                const previewElement = document.getElementById('preview-content');
-                if (!previewElement) {
-                  toast({
-                    variant: "destructive",
-                    title: "Error",
-                    description: "Preview content not found"
-                  });
-                  return;
-                }
-
-                toast({
+                const toastId = toast({
                   title: "Processing",
-                  description: "Creating preview image..."
+                  description: "Creating preview image...",
+                  duration: 10000,
                 });
 
-                // Wait for all images to load
-                await Promise.all(
-                  Array.from(previewElement.getElementsByTagName('img'))
-                    .map(img => img.complete ? Promise.resolve() : new Promise(resolve => img.onload = resolve))
-                );
+                const previewElement = document.getElementById('preview-content');
+                if (!previewElement) throw new Error('Preview content not found');
 
-                // Create canvas with specific settings
+                // Wait a moment for components to fully render
+                await new Promise(resolve => setTimeout(resolve, 500));
+
+                // Create canvas
                 const canvas = await html2canvas(previewElement, {
                   scale: 2,
                   useCORS: true,
-                  logging: false,
                   allowTaint: true,
                   backgroundColor: '#ffffff',
-                  windowWidth: previewElement.scrollWidth,
-                  windowHeight: previewElement.scrollHeight,
-                  onclone: (doc) => {
-                    const el = doc.getElementById('preview-content');
-                    if (el) {
-                      el.style.padding = '20px';
-                      el.style.width = 'fit-content';
-                    }
-                  }
+                  width: previewElement.scrollWidth,
+                  height: previewElement.scrollHeight,
                 });
 
                 toast({
                   title: "Processing",
-                  description: "Creating PDF document..."
+                  description: "Converting to PDF...",
+                  duration: 10000,
                 });
 
-                // Convert to image with maximum quality
-                const imgData = canvas.toDataURL('image/jpeg', 1.0);
+                // Create PDF with custom settings
+                const pdf = new jsPDF('p', 'mm', 'a4');
+                const imgData = canvas.toDataURL('image/png', 1.0);
 
-                // Create PDF document
-                const pdf = new jsPDF({
-                  orientation: 'portrait',
-                  unit: 'mm',
-                  format: 'a4',
-                  compress: true
-                });
+                // Set page size
+                const pdfWidth = pdf.internal.pageSize.getWidth();
+                const pdfHeight = pdf.internal.pageSize.getHeight();
 
-                // Calculate dimensions
-                const pageWidth = pdf.internal.pageSize.getWidth();
-                const pageHeight = pdf.internal.pageSize.getHeight();
+                // Calculate dimensions to fit content properly
+                const imgWidth = canvas.width;
+                const imgHeight = canvas.height;
+                const ratio = Math.min(pdfWidth / imgWidth, pdfHeight / imgHeight) * 0.9;
+
+                // Center the image
+                const x = (pdfWidth - (imgWidth * ratio)) / 2;
+                const y = 10; // Add some top margin
+
+                // Add the image to PDF
+                pdf.addImage(imgData, 'PNG', x, y, imgWidth * ratio, imgHeight * ratio);
                 
-                // Calculate scaling
-                const widthRatio = pageWidth / canvas.width;
-                const heightRatio = pageHeight / canvas.height;
-                const ratio = Math.min(widthRatio, heightRatio) * 0.95; // 95% of the page
-
-                const centerX = (pageWidth - (canvas.width * ratio)) / 2;
-                const imageWidth = canvas.width * ratio;
-                const imageHeight = canvas.height * ratio;
-
-                // Add image to PDF
-                pdf.addImage(imgData, 'JPEG', centerX, 10, imageWidth, imageHeight);
-                
-                // Save the PDF
-                pdf.save('game-store-report.pdf');
+                // Save with a unique name
+                const timestamp = new Date().toISOString().slice(0,10);
+                pdf.save(`game-store-report-${timestamp}.pdf`);
 
                 toast({
+                  title: "Success",
+                  description: "Report saved successfully!",
+                  duration: 3000,
+                });
+
+                setPreviewOpen(false);
+              } catch (error) {
+                console.error('Error generating PDF:', error);
+                toast({
+                  variant: "destructive",
+                  title: "Error",
+                  description: error instanceof Error ? error.message : "Failed to generate PDF",
+                  duration: 3000,
+                });
+              }
+            }}>
+              Save Report
+            </Button>
+          </DialogFooter>
+        </DialogContent>
+      </Dialog>
+    </div>
+  );
+}
                   title: "Success",
                   description: "Report saved as image and PDF successfully"
                 });
