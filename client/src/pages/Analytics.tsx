@@ -102,7 +102,7 @@ export default function Analytics() {
   }, []);
   
   return (
-    <div id="analytics-content" className="space-y-8">
+    <div id="analytics-content" className="space-y-8 p-4">
       <div className="flex justify-between items-center">
         <h2 className="text-3xl font-bold">Analytics Dashboard</h2>
       </div>

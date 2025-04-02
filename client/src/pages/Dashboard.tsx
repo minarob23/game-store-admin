@@ -113,16 +113,16 @@ export default function Dashboard() {
 
   const handleGeneratePDF = async () => {
     try {
-      // Generate PDF content
+      // Generate PDF content -  This needs to be implemented.  Placeholder for now.
       const dashboardPDF = await generatePDF('preview-dashboard', 'dashboard-report.pdf');
       const analyticsPDF = await generatePDF('preview-analytics', 'analytics-report.pdf');
       const inventoryReport = generateInventoryReport(data.recentGames);
-      
+
       toast({
         title: "Reports generated",
         description: "PDF reports have been generated and saved",
       });
-      
+
       setPreviewOpen(false);
     } catch (error) {
       console.error('Error generating reports:', error);
@@ -264,8 +264,23 @@ export default function Dashboard() {
             <Button variant="outline" onClick={() => setPreviewOpen(false)}>
               Cancel
             </Button>
-            <Button onClick={handleGeneratePDF}>
-              Generate PDFs
+            <Button onClick={async () => {
+              try {
+                await generatePDF('preview-content', 'full-report.pdf');
+                toast({
+                  title: "Success",
+                  description: "Report saved successfully"
+                });
+                setPreviewOpen(false);
+              } catch (error) {
+                toast({
+                  variant: "destructive",
+                  title: "Error",
+                  description: "Failed to save report"
+                });
+              }
+            }}>
+              Save Report
             </Button>
           </DialogFooter>
         </DialogContent>
