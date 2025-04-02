@@ -56,3 +56,11 @@ ${game.title}
 
   return report;
 }
+
+export async function generateDashboardPDF() {
+  return await generatePDF('dashboard-content', 'dashboard-report.pdf');
+}
+
+export async function generateAnalyticsPDF() {
+  return await generatePDF('analytics-content', 'analytics-report.pdf');
+}

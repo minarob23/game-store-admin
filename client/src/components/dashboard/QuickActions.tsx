@@ -5,7 +5,8 @@ import {
   CardTitle 
 } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { Plus, Download, BarChart3 } from "lucide-react";
+import { Plus, Download, BarChart3, FileDown } from "lucide-react";
+import { generateDashboardPDF, generateAnalyticsPDF } from "@/lib/reports";
 
 interface QuickActionsProps {
   onAddGame: () => void;
@@ -48,6 +49,24 @@ export default function QuickActions({
         >
           <BarChart3 className="mr-2 h-4 w-4" />
           Generate Report
+        </Button>
+
+        <Button 
+          variant="outline"
+          className="w-full"
+          onClick={() => generateDashboardPDF()}
+        >
+          <FileDown className="mr-2 h-4 w-4" />
+          Save Dashboard as PDF
+        </Button>
+
+        <Button 
+          variant="outline"
+          className="w-full"
+          onClick={() => generateAnalyticsPDF()}
+        >
+          <FileDown className="mr-2 h-4 w-4" />
+          Save Analytics as PDF
         </Button>
       </CardContent>
     </Card>
