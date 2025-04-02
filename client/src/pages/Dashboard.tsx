@@ -272,7 +272,7 @@ export default function Dashboard() {
                   <CardHeader className="pb-8 border-b">
                     <CardTitle>Platform Distribution</CardTitle>
                   </CardHeader>
-                  <CardContent className="h-[300px]">
+                  <CardContent className="h-[400px]">
                     <ResponsiveContainer width="100%" height="100%">
                       <PieChart>
                         <Pie
@@ -301,7 +301,7 @@ export default function Dashboard() {
                   <CardHeader className="pb-8 border-b">
                     <CardTitle>Genre Distribution</CardTitle>
                   </CardHeader>
-                  <CardContent className="h-[300px]">
+                  <CardContent className="h-[400px]">
                     <ResponsiveContainer width="100%" height="100%">
                       <PieChart>
                         <Pie

@@ -25,7 +25,7 @@ import GenreDistribution from "@/components/analytics/GenreDistribution";
 export default function Analytics() {
   const { toast } = useToast();
   const [chartView, setChartView] = useState("overview");
-
+  
   // Fetch dashboard data
   const { data, isLoading } = useQuery<{
     stats: {
@@ -41,7 +41,7 @@ export default function Analytics() {
   }>({
     queryKey: ['/api/dashboard/stats'],
   });
-
+  
   // Transform platform data for pie chart
   const platformData = data?.platforms ? [
     { name: "PC", value: data.platforms.pc },
@@ -49,14 +49,14 @@ export default function Analytics() {
     { name: "Xbox Series X", value: data.platforms.xsx },
     { name: "Nintendo Switch", value: data.platforms.switch }
   ] : [];
-
+  
   // Create inventory data for bar chart
   const inventoryData = [
     { name: "Total Games", value: data?.stats?.totalGames || 0 },
     { name: "Low Stock", value: data?.stats?.lowStock || 0 },
     { name: "Out of Stock", value: data?.stats?.outOfStock || 0 }
   ];
-
+  
   // Create monthly revenue simulation for line chart
   const revenueData = [
     { month: "Jan", revenue: 5300 },
@@ -72,7 +72,7 @@ export default function Analytics() {
     { month: "Nov", revenue: 9200 },
     { month: "Dec", revenue: 10500 }
   ];
-
+  
   // Colors for charts - Different color schemes for each chart type
   const PLATFORM_COLORS = ["#845EC2", "#D65DB1", "#FF6F91", "#FF9671", "#FFC75F", "#F9F871"]; // New colorful theme for platforms
   const INVENTORY_COLORS = {
@@ -83,30 +83,30 @@ export default function Analytics() {
     light: "#4CAF50", // Green for light theme
     dark: "#81C784"   // Lighter green for dark theme
   };
-
+  
   // Get the current theme to adjust chart colors for theme changes
   const [isDarkTheme, setIsDarkTheme] = useState(document.documentElement.classList.contains('dark'));
-
+  
   // Update isDarkTheme when the theme changes
   useEffect(() => {
     const observer = new MutationObserver(() => {
       setIsDarkTheme(document.documentElement.classList.contains('dark'));
     });
-
+    
     observer.observe(document.documentElement, {
       attributes: true,
       attributeFilter: ['class'],
     });
-
+    
     return () => observer.disconnect();
   }, []);
-
+  
   return (
     <div id="analytics-content" className="space-y-8 p-4">
       <div className="flex justify-between items-center">
         <h2 className="text-3xl font-bold">Analytics Dashboard</h2>
       </div>
-
+      
       <Tabs value={chartView} onValueChange={setChartView}>
         <TabsList>
           <TabsTrigger value="overview">Overview</TabsTrigger>
@@ -115,7 +115,7 @@ export default function Analytics() {
           <TabsTrigger value="inventory">Inventory Status</TabsTrigger>
           <TabsTrigger value="revenue">Revenue Trend</TabsTrigger>
         </TabsList>
-
+        
         {/* Overview Tab */}
         <TabsContent value="overview" className="mt-6">
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
@@ -154,7 +154,7 @@ export default function Analytics() {
                 )}
               </CardContent>
             </Card>
-
+            
             {/* Inventory Status Chart */}
             <Card>
               <CardHeader>
@@ -182,7 +182,7 @@ export default function Analytics() {
               </CardContent>
             </Card>
           </div>
-
+          
           {/* Revenue Trend Chart */}
           <Card className="mt-6">
             <CardHeader>
@@ -215,7 +215,7 @@ export default function Analytics() {
             </CardContent>
           </Card>
         </TabsContent>
-
+        
         {/* Platform Distribution Tab */}
         <TabsContent value="platforms" className="mt-6">
           <Card>
@@ -223,7 +223,7 @@ export default function Analytics() {
               <CardTitle>Platform Distribution</CardTitle>
               <CardDescription>Game distribution across different platforms</CardDescription>
             </CardHeader>
-            <CardContent className="h-72">
+            <CardContent className="h-96">
               {isLoading ? (
                 <div className="w-full h-full flex items-center justify-center">
                   <Skeleton className="h-80 w-80 rounded-full" />
@@ -269,7 +269,7 @@ export default function Analytics() {
                   <CardTitle>Genre Popularity</CardTitle>
                   <CardDescription>Game distribution across different genres</CardDescription>
                 </CardHeader>
-                <CardContent className="h-72">
+                <CardContent className="h-96">
                   {isLoading ? (
                     <div className="w-full h-full flex items-center justify-center">
                       <Skeleton className="h-80 w-80 rounded-full" />
@@ -307,7 +307,7 @@ export default function Analytics() {
             </div>
           </div>
         </TabsContent>
-
+        
         {/* Inventory Status Tab */}
         <TabsContent value="inventory" className="mt-6">
           <Card>
@@ -337,7 +337,7 @@ export default function Analytics() {
             </CardContent>
           </Card>
         </TabsContent>
-
+        
         {/* Revenue Trend Tab */}
         <TabsContent value="revenue" className="mt-6">
           <Card>
@@ -371,7 +371,7 @@ export default function Analytics() {
               )}
             </CardContent>
           </Card>
-
+          
           {/* Current Revenue Card */}
           <div className="mt-6 grid grid-cols-1 md:grid-cols-3 gap-6">
             <Card className="md:col-span-1 bg-primary/10">
@@ -389,7 +389,7 @@ export default function Analytics() {
                 </div>
               </CardContent>
             </Card>
-
+            
             <Card className="md:col-span-2">
               <CardHeader>
                 <CardTitle>Revenue Breakdown</CardTitle>
