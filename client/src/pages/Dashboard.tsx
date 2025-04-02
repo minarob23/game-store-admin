@@ -269,7 +269,7 @@ export default function Dashboard() {
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                 {/* Platform Distribution */}
                 <Card>
-                  <CardHeader>
+                  <CardHeader className="pb-8 border-b">
                     <CardTitle>Platform Distribution</CardTitle>
                   </CardHeader>
                   <CardContent className="h-[400px]">
@@ -298,7 +298,7 @@ export default function Dashboard() {
 
                 {/* Genre Distribution */}
                 <Card>
-                  <CardHeader>
+                  <CardHeader className="pb-8 border-b">
                     <CardTitle>Genre Distribution</CardTitle>
                   </CardHeader>
                   <CardContent className="h-[400px]">
