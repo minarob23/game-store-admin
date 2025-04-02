@@ -85,6 +85,8 @@ export default function Dashboard() {
     });
   };
 
+  const [previewOpen, setPreviewOpen] = useState(false);
+
   // Handle generate report
   const handleGenerateReport = async () => {
     if (!data?.recentGames) {
@@ -96,18 +98,22 @@ export default function Dashboard() {
       return;
     }
 
+    setPreviewOpen(true);
+  };
+
+  const handleGeneratePDF = async () => {
     try {
       // Generate PDF content
-      await generatePDF('dashboard-content', 'dashboard-report.pdf');
-      await generatePDF('analytics-content', 'analytics-report.pdf');
-
-      // Generate text report
-      const report = generateInventoryReport(data.recentGames);
+      const dashboardPDF = await generatePDF('preview-dashboard', 'dashboard-report.pdf');
+      const analyticsPDF = await generatePDF('preview-analytics', 'analytics-report.pdf');
+      const inventoryReport = generateInventoryReport(data.recentGames);
       
       toast({
         title: "Reports generated",
         description: "PDF reports have been generated and saved",
       });
+      
+      setPreviewOpen(false);
     } catch (error) {
       console.error('Error generating reports:', error);
       toast({
@@ -182,6 +188,78 @@ export default function Dashboard() {
         onSave={handleAddGame}
         title="Add New Game"
       />
+
+      {/* Preview Dialog */}
+      <Dialog open={previewOpen} onOpenChange={setPreviewOpen}>
+        <DialogContent className="max-w-[90vw] max-h-[90vh] overflow-y-auto">
+          <DialogHeader>
+            <DialogTitle>Report Preview</DialogTitle>
+            <DialogDescription>Preview the report before generating PDFs</DialogDescription>
+          </DialogHeader>
+
+          <div className="space-y-8">
+            {/* Dashboard Preview */}
+            <div id="preview-dashboard" className="border rounded-lg p-4">
+              <h3 className="text-lg font-semibold mb-4">Dashboard Report</h3>
+              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+                <Card>
+                  <CardHeader>
+                    <CardTitle>Total Games</CardTitle>
+                  </CardHeader>
+                  <CardContent>
+                    <p className="text-2xl font-bold">{data?.stats?.totalGames}</p>
+                  </CardContent>
+                </Card>
+                <Card>
+                  <CardHeader>
+                    <CardTitle>Revenue</CardTitle>
+                  </CardHeader>
+                  <CardContent>
+                    <p className="text-2xl font-bold">${data?.stats?.revenue}</p>
+                  </CardContent>
+                </Card>
+              </div>
+            </div>
+
+            {/* Analytics Preview */}
+            <div id="preview-analytics" className="border rounded-lg p-4">
+              <h3 className="text-lg font-semibold mb-4">Analytics Report</h3>
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <Card>
+                  <CardHeader>
+                    <CardTitle>Platform Distribution</CardTitle>
+                  </CardHeader>
+                  <CardContent>
+                    <PlatformDistribution
+                      platforms={data?.platforms || {}}
+                      isLoading={isLoading}
+                    />
+                  </CardContent>
+                </Card>
+              </div>
+            </div>
+
+            {/* Inventory Preview */}
+            <div className="border rounded-lg p-4">
+              <h3 className="text-lg font-semibold mb-4">Inventory Report</h3>
+              <div className="space-y-4">
+                <p>Total Games: {data?.stats?.totalGames}</p>
+                <p>Low Stock Items: {data?.stats?.lowStock}</p>
+                <p>Out of Stock: {data?.stats?.outOfStock}</p>
+              </div>
+            </div>
+          </div>
+
+          <DialogFooter>
+            <Button variant="outline" onClick={() => setPreviewOpen(false)}>
+              Cancel
+            </Button>
+            <Button onClick={handleGeneratePDF}>
+              Generate PDFs
+            </Button>
+          </DialogFooter>
+        </DialogContent>
+      </Dialog>
     </div>
   );
 }
