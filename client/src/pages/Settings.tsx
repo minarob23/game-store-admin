@@ -71,12 +71,33 @@ export default function Settings() {
     },
   });
   
+  const { user, setUser } = useAuth();
+  
   // Handle profile form submission
-  const onProfileSubmit = (data: z.infer<typeof profileFormSchema>) => {
-    toast({
-      title: "Profile updated",
-      description: "Your profile information has been updated",
-    });
+  const onProfileSubmit = async (data: z.infer<typeof profileFormSchema>) => {
+    try {
+      const response = await fetch('/api/users/me', {
+        method: 'PUT',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(data),
+      });
+      
+      if (response.ok) {
+        setUser({ ...user, ...data });
+        toast({
+          title: "Profile updated",
+          description: "Your profile information has been updated",
+        });
+      }
+    } catch (error) {
+      toast({
+        variant: "destructive",
+        title: "Error",
+        description: "Failed to update profile",
+      });
+    }
   };
   
   // Handle password form submission
