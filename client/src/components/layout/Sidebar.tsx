@@ -74,8 +74,8 @@ export default function Sidebar() {
             "transition-opacity duration-200",
             collapsed ? "opacity-0 w-0 overflow-hidden" : "opacity-100"
           )}>
-            <p className="font-medium">{user?.fullName || user?.username || "Admin"}</p>
-            <p className="text-xs text-muted-foreground">{user?.username || "Admin"}</p>
+            <p className="font-medium">{user?.username || "Admin"}</p>
+            <p className="text-xs text-muted-foreground">{user?.role || "Admin"}</p>
           </div>
         </div>
         
