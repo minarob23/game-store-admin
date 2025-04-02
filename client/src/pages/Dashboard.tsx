@@ -266,13 +266,13 @@ export default function Dashboard() {
             {/* Analytics Preview */}
             <div id="preview-analytics" className="border rounded-lg p-4">
               <h3 className="text-lg font-semibold mb-4">Analytics Report</h3>
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mt-8">
                 {/* Platform Distribution */}
                 <Card>
-                  <CardHeader className="pb-8 border-b">
+                  <CardHeader className="pb-2 border-b">
                     <CardTitle>Platform Distribution</CardTitle>
                   </CardHeader>
-                  <CardContent className="h-[400px]">
+                  <CardContent className="h-[400px] pt-8">
                     <ResponsiveContainer width="100%" height="100%">
                       <PieChart>
                         <Pie
@@ -468,7 +468,25 @@ export default function Dashboard() {
             </Button>
             <Button onClick={async () => {
               try {
-                await generatePDF('preview-content', 'game-store-report.pdf');
+                const element = document.getElementById('preview-content');
+                if (!element) throw new Error('Preview content not found');
+                
+                // Convert to image using html2canvas
+                const canvas = await html2canvas(element, {
+                  scale: 2,
+                  useCORS: true,
+                  logging: false
+                });
+                
+                // Create PDF from image
+                const pdf = new jsPDF('p', 'mm', 'a4');
+                const imgData = canvas.toDataURL('image/png');
+                const pdfWidth = pdf.internal.pageSize.getWidth();
+                const pdfHeight = (canvas.height * pdfWidth) / canvas.width;
+                
+                pdf.addImage(imgData, 'PNG', 0, 0, pdfWidth, pdfHeight);
+                pdf.save('game-store-report.pdf');
+                
                 toast({
                   title: "Success",
                   description: "Report saved successfully"

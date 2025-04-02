@@ -1,5 +1,6 @@
 
-import html2pdf from 'html2pdf.js';
+import html2canvas from 'html2canvas';
+import { jsPDF } from 'jspdf';
 
 export async function generatePDF(elementId: string, filename: string) {
   const element = document.getElementById(elementId);
@@ -7,25 +8,20 @@ export async function generatePDF(elementId: string, filename: string) {
     throw new Error(`Element with ID "${elementId}" not found`);
   }
 
-  const opt = {
-    margin: 1,
-    filename: filename,
-    image: { type: 'jpeg', quality: 0.98 },
-    html2canvas: { 
+  try {
+    const canvas = await html2canvas(element, {
       scale: 2,
       useCORS: true,
-      logging: true
-    },
-    jsPDF: { 
-      unit: 'in', 
-      format: 'a4', 
-      orientation: 'portrait',
-      compress: true
-    }
-  };
+      logging: false
+    });
 
-  try {
-    const pdf = await html2pdf().set(opt).from(element).save();
+    const pdf = new jsPDF('p', 'mm', 'a4');
+    const imgData = canvas.toDataURL('image/png');
+    const pdfWidth = pdf.internal.pageSize.getWidth();
+    const pdfHeight = (canvas.height * pdfWidth) / canvas.width;
+
+    pdf.addImage(imgData, 'PNG', 0, 0, pdfWidth, pdfHeight);
+    pdf.save(filename);
     return pdf;
   } catch (error) {
     console.error('Error generating PDF:', error);
