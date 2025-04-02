@@ -225,7 +225,7 @@ export default function Dashboard() {
         <DialogContent className="max-w-[90vw] max-h-[90vh] overflow-y-auto">
           <DialogHeader>
             <DialogTitle>Report Preview</DialogTitle>
-            <DialogDescription>Preview the report before generating PDFs</DialogDescription>
+            <DialogDescription>Preview the report before save it</DialogDescription>
           </DialogHeader>
 
           <div id="preview-content" className="space-y-8">
@@ -467,7 +467,7 @@ export default function Dashboard() {
             </Button>
             <Button onClick={async () => {
               try {
-                await generateDashboardPDF();
+                await generatePDF('preview-content', 'game-store-report.pdf');
                 toast({
                   title: "Success",
                   description: "Report saved successfully"
