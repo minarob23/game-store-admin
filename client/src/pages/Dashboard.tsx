@@ -477,29 +477,47 @@ export default function Dashboard() {
                 if (!previewElement) throw new Error('Preview content not found');
 
                 const canvas = await html2canvas(previewElement, {
-                  scale: 2,
+                  scale: 1,
                   useCORS: true,
-                  logging: false,
-                  backgroundColor: '#ffffff'
+                  logging: true,
+                  allowTaint: true,
+                  foreignObjectRendering: true,
+                  backgroundColor: '#ffffff',
+                  windowWidth: previewElement.scrollWidth,
+                  windowHeight: previewElement.scrollHeight
                 });
 
                 toast({
                   title: "Processing",
-                  description: "Converting to PDF..."
+                  description: "Saving as image and creating PDF..."
                 });
 
-                const imgData = canvas.toDataURL('image/png');
-                const pdf = new jsPDF('p', 'mm', 'a4');
+                // First save as image
+                const imgData = canvas.toDataURL('image/png', 1.0);
                 
-                const imgWidth = pdf.internal.pageSize.getWidth();
-                const imgHeight = (canvas.height * imgWidth) / canvas.width;
+                // Create PDF with image
+                const pdf = new jsPDF({
+                  orientation: 'portrait',
+                  unit: 'mm',
+                  format: 'a4'
+                });
+
+                const pdfWidth = pdf.internal.pageSize.getWidth();
+                const pdfHeight = pdf.internal.pageSize.getHeight();
+                const imgWidth = canvas.width;
+                const imgHeight = canvas.height;
+                const ratio = Math.min(pdfWidth / imgWidth, pdfHeight / imgHeight);
                 
-                pdf.addImage(imgData, 'PNG', 0, 0, imgWidth, imgHeight);
+                const imgX = (pdfWidth - imgWidth * ratio) / 2;
+                const finalWidth = imgWidth * ratio;
+                const finalHeight = imgHeight * ratio;
+
+                pdf.addImage(imgData, 'PNG', imgX, 0, finalWidth, finalHeight);
                 pdf.save('game-store-report.pdf');
 
                 toast({
                   title: "Success",
-                  description: "Report saved successfully"
+                  description: "Report saved as image and PDF successfully"
                 });
                 setPreviewOpen(false);
               } catch (error) {
