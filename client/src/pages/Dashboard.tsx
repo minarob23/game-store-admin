@@ -9,6 +9,7 @@ import GameModal from "@/components/inventory/GameModal";
 import { apiRequest, queryClient } from "@/lib/queryClient";
 import { useToast } from "@/hooks/use-toast";
 import { Game } from "@shared/schema";
+import { generateInventoryCSV, generateInventoryReport } from "@/lib/reports"; // Added import
 
 export default function Dashboard() {
   const [, navigate] = useLocation();
@@ -44,7 +45,7 @@ export default function Dashboard() {
         description: "Game added successfully",
       });
       setGameModalOpen(false);
-      
+
       // Refresh dashboard data
       queryClient.invalidateQueries({ queryKey: ['/api/dashboard/stats'] });
     } catch (error) {
@@ -62,7 +63,7 @@ export default function Dashboard() {
       title: "Export started",
       description: "Your inventory is being exported",
     });
-    // In a real app, this would trigger an actual export
+    generateInventoryCSV(); // Updated to call the function
   };
 
   // Handle generate report
@@ -71,7 +72,7 @@ export default function Dashboard() {
       title: "Report generation",
       description: "Your report is being generated",
     });
-    // In a real app, this would generate a report
+    generateInventoryReport(); // Updated to call the function
   };
 
   return (
@@ -105,7 +106,7 @@ export default function Dashboard() {
           isLoading={isLoading} 
         />
       </div>
-      
+
       {/* Main Content Grid */}
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
         {/* Recent Games Table */}
@@ -115,7 +116,7 @@ export default function Dashboard() {
             isLoading={isLoading} 
           />
         </div>
-        
+
         {/* Quick Actions and Platform Distribution */}
         <div className="space-y-6">
           <QuickActions 
@@ -123,14 +124,14 @@ export default function Dashboard() {
             onExportInventory={handleExportInventory}
             onGenerateReport={handleGenerateReport}
           />
-          
+
           <PlatformDistribution 
             platforms={isLoading ? {} : data?.platforms || {}} 
             isLoading={isLoading} 
           />
         </div>
       </div>
-      
+
       {/* Game Modal */}
       <GameModal
         open={gameModalOpen}
