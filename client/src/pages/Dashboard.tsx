@@ -59,20 +59,58 @@ export default function Dashboard() {
 
   // Handle export inventory
   const handleExportInventory = () => {
+    if (!data?.recentGames) {
+      toast({
+        variant: "destructive",
+        title: "Export failed",
+        description: "No games data available",
+      });
+      return;
+    }
+
+    const csvContent = generateInventoryCSV(data.recentGames);
+    const blob = new Blob([csvContent], { type: 'text/csv' });
+    const url = window.URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = `inventory_${new Date().toISOString().split('T')[0]}.csv`;
+    document.body.appendChild(a);
+    a.click();
+    window.URL.revokeObjectURL(url);
+    document.body.removeChild(a);
+
     toast({
-      title: "Export started",
-      description: "Your inventory is being exported",
+      title: "Export complete",
+      description: "Your inventory has been exported",
     });
-    generateInventoryCSV(); // Updated to call the function
   };
 
   // Handle generate report
   const handleGenerateReport = () => {
+    if (!data?.recentGames) {
+      toast({
+        variant: "destructive",
+        title: "Report generation failed",
+        description: "No games data available",
+      });
+      return;
+    }
+
+    const report = generateInventoryReport(data.recentGames);
+    const blob = new Blob([report], { type: 'text/plain' });
+    const url = window.URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = `inventory_report_${new Date().toISOString().split('T')[0]}.txt`;
+    document.body.appendChild(a);
+    a.click();
+    window.URL.revokeObjectURL(url);
+    document.body.removeChild(a);
+
     toast({
-      title: "Report generation",
-      description: "Your report is being generated",
+      title: "Report generated",
+      description: "Your report has been generated",
     });
-    generateInventoryReport(); // Updated to call the function
   };
 
   return (
