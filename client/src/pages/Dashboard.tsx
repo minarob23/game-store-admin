@@ -140,8 +140,9 @@ export default function Dashboard() {
       const inventoryReport = generateInventoryReport(data.recentGames);
 
       toast({
-        title: "Reports generated",
-        description: "PDF reports have been generated and saved",
+        title: "Report Generated",
+        description: "Your report has been generated and is ready to download",
+        duration: 5000,
       });
 
       setPreviewOpen(false);
