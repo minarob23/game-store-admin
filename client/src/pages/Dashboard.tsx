@@ -1,5 +1,20 @@
 import { useState } from "react";
 import { useQuery } from "@tanstack/react-query";
+import { 
+  ResponsiveContainer, 
+  PieChart, 
+  Pie, 
+  Cell, 
+  Tooltip, 
+  Legend,
+  BarChart,
+  Bar,
+  LineChart,
+  Line,
+  CartesianGrid,
+  XAxis,
+  YAxis
+} from "recharts";
 import { useLocation } from "wouter";
 import {
   Dialog,
