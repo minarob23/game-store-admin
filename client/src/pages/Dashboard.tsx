@@ -470,11 +470,33 @@ export default function Dashboard() {
               try {
                 toast({
                   title: "Processing",
-                  description: "Generating PDF report..."
+                  description: "Creating report preview..."
                 });
 
-                await generatePDF('preview-content', 'game-store-report.pdf');
+                const previewElement = document.getElementById('preview-content');
+                if (!previewElement) throw new Error('Preview content not found');
+
+                const canvas = await html2canvas(previewElement, {
+                  scale: 2,
+                  useCORS: true,
+                  logging: false,
+                  backgroundColor: '#ffffff'
+                });
+
+                toast({
+                  title: "Processing",
+                  description: "Converting to PDF..."
+                });
+
+                const imgData = canvas.toDataURL('image/png');
+                const pdf = new jsPDF('p', 'mm', 'a4');
                 
+                const imgWidth = pdf.internal.pageSize.getWidth();
+                const imgHeight = (canvas.height * imgWidth) / canvas.width;
+                
+                pdf.addImage(imgData, 'PNG', 0, 0, imgWidth, imgHeight);
+                pdf.save('game-store-report.pdf');
+
                 toast({
                   title: "Success",
                   description: "Report saved successfully"
