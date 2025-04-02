@@ -19,7 +19,7 @@ export default function PlatformDistribution({
   // Define common platform data with eye-catching, vibrant themed colors
   const platformColorMap: Record<string, string> = {
     // PC
-    pc: "bg-[#845EC2]",
+    pc: "bg-[#2563EB]",
     
     // PlayStation family
     ps: "bg-[#D65DB1]",
@@ -45,10 +45,10 @@ export default function PlatformDistribution({
     gc: "bg-[#F9F871]/90",
     snes: "bg-[#F9F871]/80",
     nes: "bg-[#F9F871]/70",
-    gb: "bg-[#845EC2]/90",
-    gba: "bg-[#845EC2]/80",
-    ds: "bg-[#845EC2]/70",
-    "3ds": "bg-[#845EC2]/60",
+    gb: "bg-[#2563EB]/90",
+    gba: "bg-[#2563EB]/80",
+    ds: "bg-[#2563EB]/70",
+    "3ds": "bg-[#2563EB]/60",
     
     // Other platforms
     sega: "bg-[#D65DB1]/60",
