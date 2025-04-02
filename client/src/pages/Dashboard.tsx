@@ -253,24 +253,109 @@ export default function Dashboard() {
                   <CardHeader>
                     <CardTitle>Platform Distribution</CardTitle>
                   </CardHeader>
-                  <CardContent>
-                    <PlatformDistribution
-                      platforms={data?.platforms || {}}
-                      isLoading={isLoading}
-                    />
+                  <CardContent className="h-[300px]">
+                    <ResponsiveContainer width="100%" height="100%">
+                      <PieChart>
+                        <Pie
+                          data={Object.entries(data?.platforms || {}).map(([name, value]) => ({ name, value }))}
+                          cx="50%"
+                          cy="50%"
+                          labelLine={true}
+                          outerRadius={100}
+                          fill="#8884d8"
+                          dataKey="value"
+                          label={({ name, value, percent }) => `${name}: ${value} (${(percent * 100).toFixed(0)}%)`}
+                        >
+                          {Object.entries(data?.platforms || {}).map((_, index) => (
+                            <Cell key={`cell-${index}`} fill={PLATFORM_COLORS[index % PLATFORM_COLORS.length]} />
+                          ))}
+                        </Pie>
+                        <Tooltip formatter={(value) => [`${value} games`, "Count"]} />
+                        <Legend />
+                      </PieChart>
+                    </ResponsiveContainer>
                   </CardContent>
                 </Card>
-                
+
                 {/* Genre Distribution */}
                 <Card>
                   <CardHeader>
                     <CardTitle>Genre Distribution</CardTitle>
                   </CardHeader>
-                  <CardContent>
-                    <GenreDistribution
-                      genres={data?.genres || {}}
-                      isLoading={isLoading}
-                    />
+                  <CardContent className="h-[300px]">
+                    <ResponsiveContainer width="100%" height="100%">
+                      <PieChart>
+                        <Pie
+                          data={Object.entries(data?.genres || {})
+                            .filter(([_, value]) => value > 0)
+                            .slice(0, 6)
+                            .map(([name, value]) => ({ name, value }))}
+                          cx="50%"
+                          cy="50%"
+                          labelLine={true}
+                          outerRadius={100}
+                          fill="#8884d8"
+                          dataKey="value"
+                          label={({ name, value, percent }) => `${name}: ${value} (${(percent * 100).toFixed(0)}%)`}
+                        >
+                          {Object.entries(data?.genres || {})
+                            .filter(([_, value]) => value > 0)
+                            .slice(0, 6)
+                            .map((_, index) => (
+                              <Cell key={`cell-${index}`} fill={PLATFORM_COLORS[index % PLATFORM_COLORS.length]} />
+                            ))}
+                        </Pie>
+                        <Tooltip formatter={(value) => [`${value} games`, "Count"]} />
+                        <Legend />
+                      </PieChart>
+                    </ResponsiveContainer>
+                  </CardContent>
+                </Card>
+
+                {/* Inventory Status */}
+                <Card>
+                  <CardHeader>
+                    <CardTitle>Inventory Status</CardTitle>
+                  </CardHeader>
+                  <CardContent className="h-[300px]">
+                    <ResponsiveContainer width="100%" height="100%">
+                      <BarChart data={[
+                        { name: "Total Games", value: data?.stats?.totalGames || 0 },
+                        { name: "Low Stock", value: data?.stats?.lowStock || 0 },
+                        { name: "Out of Stock", value: data?.stats?.outOfStock || 0 }
+                      ]}>
+                        <CartesianGrid strokeDasharray="3 3" />
+                        <XAxis dataKey="name" />
+                        <YAxis />
+                        <Tooltip />
+                        <Bar dataKey="value" fill="#8884d8" />
+                      </BarChart>
+                    </ResponsiveContainer>
+                  </CardContent>
+                </Card>
+
+                {/* Revenue Trend */}
+                <Card>
+                  <CardHeader>
+                    <CardTitle>Revenue Trend</CardTitle>
+                  </CardHeader>
+                  <CardContent className="h-[300px]">
+                    <ResponsiveContainer width="100%" height="100%">
+                      <LineChart data={[
+                        { month: "Jan", revenue: 5300 },
+                        { month: "Feb", revenue: 4800 },
+                        { month: "Mar", revenue: 6100 },
+                        { month: "Apr", revenue: 5500 },
+                        { month: "May", revenue: 7200 },
+                        { month: "Jun", revenue: 6800 }
+                      ]}>
+                        <CartesianGrid strokeDasharray="3 3" />
+                        <XAxis dataKey="month" />
+                        <YAxis />
+                        <Tooltip formatter={(value) => [`$${value}`, "Revenue"]} />
+                        <Line type="monotone" dataKey="revenue" stroke="#8884d8" strokeWidth={2} />
+                      </LineChart>
+                    </ResponsiveContainer>
                   </CardContent>
                 </Card>
               </div>
