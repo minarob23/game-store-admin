@@ -11,9 +11,12 @@ import {
 } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import StatsCard from "@/components/dashboard/StatsCard";
 import RecentGames from "@/components/dashboard/RecentGames";
 import QuickActions from "@/components/dashboard/QuickActions";
+import GenreDistribution from "@/components/analytics/GenreDistribution";
+import { formatCurrency, getStockStatus } from "@/lib/utils";
 import PlatformDistribution from "@/components/dashboard/PlatformDistribution";
 import GameModal from "@/components/inventory/GameModal";
 import { apiRequest, queryClient } from "@/lib/queryClient";
@@ -207,27 +210,37 @@ export default function Dashboard() {
             <DialogDescription>Preview the report before generating PDFs</DialogDescription>
           </DialogHeader>
 
-          <div className="space-y-8">
+          <div id="preview-content" className="space-y-8">
             {/* Dashboard Preview */}
             <div id="preview-dashboard" className="border rounded-lg p-4">
               <h3 className="text-lg font-semibold mb-4">Dashboard Report</h3>
               <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
-                <Card>
-                  <CardHeader>
-                    <CardTitle>Total Games</CardTitle>
-                  </CardHeader>
-                  <CardContent>
-                    <p className="text-2xl font-bold">{data?.stats?.totalGames}</p>
-                  </CardContent>
-                </Card>
-                <Card>
-                  <CardHeader>
-                    <CardTitle>Revenue</CardTitle>
-                  </CardHeader>
-                  <CardContent>
-                    <p className="text-2xl font-bold">${data?.stats?.revenue}</p>
-                  </CardContent>
-                </Card>
+                <StatsCard 
+                  title="Total Games" 
+                  value={data?.stats?.totalGames || 0} 
+                  icon="games" 
+                  isLoading={isLoading} 
+                />
+                <StatsCard 
+                  title="New Releases" 
+                  value={data?.stats?.newReleases || 0} 
+                  icon="releases" 
+                  change={`in the last 30 days`}
+                  isLoading={isLoading} 
+                />
+                <StatsCard 
+                  title="Low Stock" 
+                  value={data?.stats?.lowStock || 0} 
+                  icon="stock" 
+                  change="Requires attention"
+                  isLoading={isLoading} 
+                />
+                <StatsCard 
+                  title="Revenue" 
+                  value={data?.stats?.revenue ? parseFloat(data.stats.revenue) : 0} 
+                  icon="revenue" 
+                  isLoading={isLoading} 
+                />
               </div>
             </div>
 
@@ -235,6 +248,7 @@ export default function Dashboard() {
             <div id="preview-analytics" className="border rounded-lg p-4">
               <h3 className="text-lg font-semibold mb-4">Analytics Report</h3>
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                {/* Platform Distribution */}
                 <Card>
                   <CardHeader>
                     <CardTitle>Platform Distribution</CardTitle>
@@ -246,6 +260,19 @@ export default function Dashboard() {
                     />
                   </CardContent>
                 </Card>
+                
+                {/* Genre Distribution */}
+                <Card>
+                  <CardHeader>
+                    <CardTitle>Genre Distribution</CardTitle>
+                  </CardHeader>
+                  <CardContent>
+                    <GenreDistribution
+                      genres={data?.genres || {}}
+                      isLoading={isLoading}
+                    />
+                  </CardContent>
+                </Card>
               </div>
             </div>
 
@@ -253,9 +280,48 @@ export default function Dashboard() {
             <div className="border rounded-lg p-4">
               <h3 className="text-lg font-semibold mb-4">Inventory Report</h3>
               <div className="space-y-4">
-                <p>Total Games: {data?.stats?.totalGames}</p>
-                <p>Low Stock Items: {data?.stats?.lowStock}</p>
-                <p>Out of Stock: {data?.stats?.outOfStock}</p>
+                <Card>
+                  <CardHeader>
+                    <CardTitle>Game Inventory</CardTitle>
+                  </CardHeader>
+                  <CardContent>
+                    <Table>
+                      <TableHeader>
+                        <TableRow>
+                          <TableHead>Game Title</TableHead>
+                          <TableHead>Platform</TableHead>
+                          <TableHead>Genre</TableHead>
+                          <TableHead>Price</TableHead>
+                          <TableHead>Stock</TableHead>
+                        </TableRow>
+                      </TableHeader>
+                      <TableBody>
+                        {data?.recentGames.map((game) => {
+                          const { label, className } = getStockStatus(game.stock);
+                          const platforms = game.platforms as Record<string, boolean>;
+                          const platformList = Object.keys(platforms)
+                            .filter((key) => platforms[key])
+                            .map((key) => key.toUpperCase())
+                            .join(", ");
+
+                          return (
+                            <TableRow key={game.id}>
+                              <TableCell>{game.title}</TableCell>
+                              <TableCell>{platformList}</TableCell>
+                              <TableCell>{game.genre}</TableCell>
+                              <TableCell>{formatCurrency(game.price)}</TableCell>
+                              <TableCell>
+                                <span className={`px-2 py-1 rounded-full text-xs ${className}`}>
+                                  {label}
+                                </span>
+                              </TableCell>
+                            </TableRow>
+                          );
+                        })}
+                      </TableBody>
+                    </Table>
+                  </CardContent>
+                </Card>
               </div>
             </div>
           </div>
