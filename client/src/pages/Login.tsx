@@ -116,7 +116,7 @@ export default function Login() {
         </CardContent>
         <CardFooter className="text-sm text-center text-muted-foreground">
           <div className="w-full">
-            Default credentials: username or email <span className="font-semibold">admin</span> / <span className="font-semibold">admin@gamestore.com</span> with password <span className="font-semibold">admin123</span>
+            Default credentials: username <span className="font-semibold">{user?.username || "admin"}</span> / email <span className="font-semibold">{user?.email || "admin@gamestore.com"}</span> with password <span className="font-semibold">admin123</span>
           </div>
         </CardFooter>
       </Card>
