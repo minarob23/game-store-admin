@@ -19,41 +19,41 @@ export default function PlatformDistribution({
   // Define common platform data with eye-catching, vibrant themed colors
   const platformColorMap: Record<string, string> = {
     // PC
-    pc: "bg-gradient-to-r from-purple-600 to-purple-400",
+    pc: "bg-[#845EC2]",
     
     // PlayStation family
-    ps: "bg-gradient-to-r from-pink-600 to-pink-400",
-    ps2: "bg-gradient-to-r from-pink-700 to-pink-500",
-    ps3: "bg-gradient-to-r from-pink-800 to-pink-600",
-    ps4: "bg-gradient-to-r from-pink-900 to-pink-700",
-    ps5: "bg-gradient-to-r from-fuchsia-600 to-fuchsia-400",
-    psv: "bg-gradient-to-r from-fuchsia-700 to-fuchsia-500",
-    psp: "bg-gradient-to-r from-fuchsia-800 to-fuchsia-600",
-    vita: "bg-gradient-to-r from-fuchsia-900 to-fuchsia-700",
+    ps: "bg-[#D65DB1]",
+    ps2: "bg-[#D65DB1]/90",
+    ps3: "bg-[#D65DB1]/80",
+    ps4: "bg-[#D65DB1]/70",
+    ps5: "bg-[#FF6F91]",
+    psv: "bg-[#FF6F91]/90",
+    psp: "bg-[#FF6F91]/80",
+    vita: "bg-[#FF6F91]/70",
     
     // Xbox family
-    xbox: "bg-gradient-to-r from-amber-600 to-amber-400",
-    x360: "bg-gradient-to-r from-amber-700 to-amber-500",
-    xone: "bg-gradient-to-r from-amber-800 to-amber-600",
-    xsx: "bg-gradient-to-r from-amber-900 to-amber-700",
+    xbox: "bg-[#FF9671]",
+    x360: "bg-[#FF9671]/90",
+    xone: "bg-[#FF9671]/80",
+    xsx: "bg-[#FF9671]/70",
     
     // Nintendo family
-    switch: "bg-gradient-to-r from-teal-600 to-teal-400",
-    wii: "bg-gradient-to-r from-teal-700 to-teal-500",
-    wiiu: "bg-gradient-to-r from-teal-800 to-teal-600",
-    n64: "bg-gradient-to-r from-cyan-600 to-cyan-400",
-    gc: "bg-gradient-to-r from-cyan-700 to-cyan-500",
-    snes: "bg-gradient-to-r from-cyan-800 to-cyan-600",
-    nes: "bg-gradient-to-r from-cyan-900 to-cyan-700",
-    gb: "bg-gradient-to-r from-indigo-600 to-indigo-400",
-    gba: "bg-gradient-to-r from-indigo-700 to-indigo-500",
-    ds: "bg-gradient-to-r from-indigo-800 to-indigo-600",
-    "3ds": "bg-gradient-to-r from-indigo-900 to-indigo-700",
+    switch: "bg-[#FFC75F]",
+    wii: "bg-[#FFC75F]/90",
+    wiiu: "bg-[#FFC75F]/80",
+    n64: "bg-[#F9F871]",
+    gc: "bg-[#F9F871]/90",
+    snes: "bg-[#F9F871]/80",
+    nes: "bg-[#F9F871]/70",
+    gb: "bg-[#845EC2]/90",
+    gba: "bg-[#845EC2]/80",
+    ds: "bg-[#845EC2]/70",
+    "3ds": "bg-[#845EC2]/60",
     
     // Other platforms
-    sega: "bg-gradient-to-r from-green-600 to-green-400",
-    mobile: "bg-gradient-to-r from-green-700 to-green-500",
-    other: "bg-gradient-to-r from-gray-600 to-gray-400",
+    sega: "bg-[#D65DB1]/60",
+    mobile: "bg-[#FF6F91]/60",
+    other: "bg-[#FF9671]/60",
   };
 
   // Format platform names for display
