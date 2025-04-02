@@ -32,6 +32,7 @@ import {
 import { Game, gameFormSchema, platformSchema } from "@shared/schema";
 import { genreOptions } from "@/lib/utils";
 import { ImagePlus } from "lucide-react";
+import { useToast } from "@/hooks/use-toast";
 
 interface GameModalProps {
   open: boolean;
@@ -42,6 +43,7 @@ interface GameModalProps {
 }
 
 export default function GameModal({ open, onOpenChange, onSave, game, title }: GameModalProps) {
+  const { toast } = useToast();
   // Create form with validation
   const form = useForm({
     resolver: zodResolver(gameFormSchema),
@@ -141,13 +143,60 @@ export default function GameModal({ open, onOpenChange, onSave, game, title }: G
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
               {/* Image Upload */}
               <div className="md:col-span-2">
-                <div className="flex items-center justify-center h-40 bg-muted rounded-lg border-2 border-dashed border-border">
-                  <div className="text-center">
-                    <ImagePlus className="w-8 h-8 mx-auto text-muted-foreground mb-2" />
-                    <p className="text-sm text-muted-foreground">Upload Game Cover Image</p>
-                    <p className="text-xs text-muted-foreground/70 mt-1">PNG, JPG or GIF (Max. 2MB)</p>
-                  </div>
-                </div>
+                <FormField
+                  control={form.control}
+                  name="imageUrl"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormControl>
+                        <div 
+                          className="flex items-center justify-center h-40 bg-muted rounded-lg border-2 border-dashed border-border relative cursor-pointer"
+                          onClick={() => document.getElementById('imageUpload')?.click()}
+                        >
+                          {field.value ? (
+                            <img 
+                              src={field.value} 
+                              alt="Game cover" 
+                              className="h-full w-full object-contain rounded-lg"
+                            />
+                          ) : (
+                            <div className="text-center">
+                              <ImagePlus className="w-8 h-8 mx-auto text-muted-foreground mb-2" />
+                              <p className="text-sm text-muted-foreground">Upload Game Cover Image</p>
+                              <p className="text-xs text-muted-foreground/70 mt-1">PNG, JPG or GIF (Max. 2MB)</p>
+                            </div>
+                          )}
+                          <input
+                            id="imageUpload"
+                            type="file"
+                            accept="image/*"
+                            className="hidden"
+                            onChange={(e) => {
+                              const file = e.target.files?.[0];
+                              if (file) {
+                                if (file.size > 2 * 1024 * 1024) {
+                                  // Show error for files larger than 2MB
+                                  toast({
+                                    variant: "destructive",
+                                    title: "Error",
+                                    description: "Image size must be less than 2MB"
+                                  });
+                                  return;
+                                }
+                                const reader = new FileReader();
+                                reader.onload = () => {
+                                  field.onChange(reader.result);
+                                };
+                                reader.readAsDataURL(file);
+                              }
+                            }}
+                          />
+                        </div>
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
               </div>
               
               {/* Game Title */}
