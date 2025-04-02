@@ -79,7 +79,7 @@ export default function GameModal({ open, onOpenChange, onSave, game, title }: G
       const releaseDateStr = typeof game.releaseDate === 'string' 
         ? game.releaseDate 
         : new Date(game.releaseDate).toISOString().split('T')[0];
-        
+
       form.reset({
         ...game,
         releaseDate: releaseDateStr,
@@ -118,13 +118,13 @@ export default function GameModal({ open, onOpenChange, onSave, game, title }: G
     if (typeof data.releaseDate === 'string') {
       data.releaseDate = new Date(data.releaseDate);
     }
-    
+
     // Convert price to number
     data.price = parseFloat(data.price);
-    
+
     // Convert stock to integer
     data.stock = parseInt(data.stock);
-    
+
     onSave(data);
   };
 
@@ -137,7 +137,7 @@ export default function GameModal({ open, onOpenChange, onSave, game, title }: G
             Fill in the details for this game. Fields marked with * are required.
           </DialogDescription>
         </DialogHeader>
-        
+
         <Form {...form}>
           <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
@@ -149,23 +149,32 @@ export default function GameModal({ open, onOpenChange, onSave, game, title }: G
                   render={({ field }) => (
                     <FormItem>
                       <FormControl>
-                        <div 
-                          className="flex items-center justify-center h-40 bg-muted rounded-lg border-2 border-dashed border-border relative cursor-pointer"
-                          onClick={() => document.getElementById('imageUpload')?.click()}
-                        >
-                          {field.value ? (
-                            <img 
-                              src={field.value} 
-                              alt="Game cover" 
-                              className="h-full w-full object-contain rounded-lg"
-                            />
-                          ) : (
-                            <div className="text-center">
-                              <ImagePlus className="w-8 h-8 mx-auto text-muted-foreground mb-2" />
-                              <p className="text-sm text-muted-foreground">Upload Game Cover Image</p>
-                              <p className="text-xs text-muted-foreground/70 mt-1">PNG, JPG or GIF (Max. 2MB)</p>
-                            </div>
-                          )}
+                        <div className="space-y-4">
+                          <div 
+                            className="flex items-center justify-center h-40 bg-muted rounded-lg border-2 border-dashed border-border relative cursor-pointer"
+                            onClick={() => document.getElementById('imageUpload')?.click()}
+                          >
+                            {field.value ? (
+                              <img 
+                                src={field.value} 
+                                alt="Game cover" 
+                                className="h-full w-full object-contain rounded-lg"
+                              />
+                            ) : (
+                              <div className="text-center">
+                                <ImagePlus className="w-8 h-8 mx-auto text-muted-foreground mb-2" />
+                                <p className="text-sm text-muted-foreground">Upload Game Cover Image</p>
+                                <p className="text-xs text-muted-foreground/70 mt-1">PNG, JPG or GIF (Max. 2MB)</p>
+                              </div>
+                            )}
+                          </div>
+                          <Input
+                            type="text"
+                            placeholder="Or paste image URL"
+                            value={field.value || ''}
+                            onChange={(e) => field.onChange(e.target.value)}
+                            className="w-full"
+                          />
                           <input
                             id="imageUpload"
                             type="file"
@@ -175,7 +184,6 @@ export default function GameModal({ open, onOpenChange, onSave, game, title }: G
                               const file = e.target.files?.[0];
                               if (file) {
                                 if (file.size > 2 * 1024 * 1024) {
-                                  // Show error for files larger than 2MB
                                   toast({
                                     variant: "destructive",
                                     title: "Error",
@@ -185,7 +193,7 @@ export default function GameModal({ open, onOpenChange, onSave, game, title }: G
                                 }
                                 const reader = new FileReader();
                                 reader.onload = () => {
-                                  field.onChange(reader.result);
+                                  field.onChange(reader.result as string);
                                 };
                                 reader.readAsDataURL(file);
                               }
@@ -198,7 +206,7 @@ export default function GameModal({ open, onOpenChange, onSave, game, title }: G
                   )}
                 />
               </div>
-              
+
               {/* Game Title */}
               <FormField
                 control={form.control}
@@ -213,7 +221,7 @@ export default function GameModal({ open, onOpenChange, onSave, game, title }: G
                   </FormItem>
                 )}
               />
-              
+
               {/* Release Date */}
               <FormField
                 control={form.control}
@@ -228,7 +236,7 @@ export default function GameModal({ open, onOpenChange, onSave, game, title }: G
                   </FormItem>
                 )}
               />
-              
+
               {/* Developer */}
               <FormField
                 control={form.control}
@@ -243,7 +251,7 @@ export default function GameModal({ open, onOpenChange, onSave, game, title }: G
                   </FormItem>
                 )}
               />
-              
+
               {/* Publisher */}
               <FormField
                 control={form.control}
@@ -258,7 +266,7 @@ export default function GameModal({ open, onOpenChange, onSave, game, title }: G
                   </FormItem>
                 )}
               />
-              
+
               {/* Price */}
               <FormField
                 control={form.control}
@@ -280,7 +288,7 @@ export default function GameModal({ open, onOpenChange, onSave, game, title }: G
                   </FormItem>
                 )}
               />
-              
+
               {/* Stock */}
               <FormField
                 control={form.control}
@@ -301,7 +309,7 @@ export default function GameModal({ open, onOpenChange, onSave, game, title }: G
                   </FormItem>
                 )}
               />
-              
+
               {/* Genre */}
               <FormField
                 control={form.control}
@@ -333,7 +341,7 @@ export default function GameModal({ open, onOpenChange, onSave, game, title }: G
                   </FormItem>
                 )}
               />
-              
+
               {/* Platforms */}
               <FormItem className="md:col-span-2">
                 <FormLabel>Platforms *</FormLabel>
@@ -354,7 +362,7 @@ export default function GameModal({ open, onOpenChange, onSave, game, title }: G
                       </div>
                     )}
                   />
-                  
+
                   {/* PlayStation Family */}
                   <FormField
                     control={form.control}
@@ -401,7 +409,7 @@ export default function GameModal({ open, onOpenChange, onSave, game, title }: G
                       </div>
                     )}
                   />
-                  
+
                   {/* Xbox Family */}
                   <FormField
                     control={form.control}
@@ -448,7 +456,7 @@ export default function GameModal({ open, onOpenChange, onSave, game, title }: G
                       </div>
                     )}
                   />
-                  
+
                   {/* Nintendo Family */}
                   <FormField
                     control={form.control}
@@ -513,7 +521,7 @@ export default function GameModal({ open, onOpenChange, onSave, game, title }: G
                 </div>
                 <FormMessage />
               </FormItem>
-              
+
               {/* Description */}
               <FormField
                 control={form.control}
@@ -533,7 +541,7 @@ export default function GameModal({ open, onOpenChange, onSave, game, title }: G
                 )}
               />
             </div>
-            
+
             <DialogFooter>
               <Button type="button" variant="outline" onClick={() => onOpenChange(false)}>
                 Cancel
